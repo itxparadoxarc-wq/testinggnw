@@ -107,7 +107,7 @@ const StorefrontHeader = () => {
           {/* Logo */}
           <Link to="/" className="shrink-0 flex items-center gap-1.5 sm:gap-2 mr-auto lg:mr-0">
             <img
-              src="/assets/logo.webp"
+              src="/__l5e/assets-v1/672ef6d3-4ff0-4905-aadf-53cdbfa2f036/logo.webp"
               alt={settings.store_name}
               className="h-7 sm:h-9 w-auto object-contain"
             />
