@@ -149,7 +149,7 @@ export default function StoryTimeline() {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full py-24 md:py-32 overflow-hidden bg-background border-t border-border/40"
+      className="relative w-full py-14 md:py-24 overflow-hidden bg-background border-t border-border/40"
       id="brand-story"
       style={{ '--scroll-pct': '0' } as React.CSSProperties}
     >
@@ -161,7 +161,7 @@ export default function StoryTimeline() {
 
       <div className="container-page relative z-10 px-4">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-20 md:mb-28">
+        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-24">
           <div className="flex items-center justify-center gap-2 mb-3">
             <span className="h-[1px] w-8 bg-primary" />
             <span className="text-xs uppercase font-extrabold tracking-widest text-primary">Brand Narrative</span>
@@ -248,7 +248,7 @@ export default function StoryTimeline() {
           </div>
 
           {/* STORY CARDS GRID */}
-          <div className="space-y-24 md:space-y-0 md:relative w-full h-full">
+          <div className="space-y-10 md:space-y-0 md:relative w-full h-full">
             {STORY_STEPS.map((step, idx) => {
               const Icon = step.icon;
               const isEven = idx % 2 === 0;
@@ -256,13 +256,14 @@ export default function StoryTimeline() {
               return (
                 <div 
                   key={step.number}
-                  className={`flex flex-col md:flex-row relative z-10 w-full items-center justify-between gap-8 md:gap-0 ${
+                  className={`flex flex-col md:flex-row relative z-10 w-full items-center justify-between gap-6 md:gap-0 ${
                     isEven ? 'md:flex-row' : 'md:flex-row-reverse'
                   }`}
                   style={{
-                    paddingTop: idx > 0 ? '160px' : '0px'
+                    paddingTop: idx > 0 ? undefined : '0px'
                   }}
                 >
+                  <style>{`@media (min-width: 768px) { [data-tl-step="${step.number}"] { padding-top: ${idx > 0 ? '160px' : '0px'}; } }`}</style>
                   {/* Flanking Card Container - text card has NO image to preload */}
                   <CardWithObserver isLeft={isEven}>
                     {/* Glassmorphic Story Card */}
