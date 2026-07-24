@@ -19,7 +19,7 @@ const STORY_STEPS: StoryStep[] = [
     description: 'Our creative journey begins in the raw streets of Lahore. Our designers sculpt streetwear silhouettes that combine rigid structure, heavy-drop fits, and premium cyber aesthetics.',
     icon: Compass,
     subSpecs: ['Heavy Drop Shoulder', 'Technical Panel Cuts', '3D Box Silhouettes'],
-    imageUrl: '/assets/timeline-blueprint.webp'
+    imageUrl: '/__l5e/assets-v1/4c914817-e33f-4825-a242-20de311e1c9c/tl-1.jpg'
   },
   {
     number: '02',
@@ -27,15 +27,15 @@ const STORY_STEPS: StoryStep[] = [
     description: 'We source ultra-premium, heavy-weight organic cotton (up to 450 GSM) directly from sustainable fields across Pakistan, woven to deliver long-lasting softness and durable structural armor.',
     icon: Leaf,
     subSpecs: ['100% Organic Sourcing', '450 GSM Double-Fleece', 'Pakistan Cotton Pride'],
-    imageUrl: '/assets/timeline-cotton.webp'
+    imageUrl: '/__l5e/assets-v1/ef68b935-19fe-4eb9-900c-d6e1523328f9/tl-2.jpg'
   },
   {
     number: '03',
     title: 'REINFORCED ARTISANAL STITCH',
-    description: 'Every seams and detail is reinforced with heavy double-needle stitching by local Pakistani artisans. This gives our garments unmatched structural integrity that holds its shape wash after wash.',
+    description: 'Every seam and detail is reinforced with heavy double-needle stitching by local Pakistani artisans. This gives our garments unmatched structural integrity that holds its shape wash after wash.',
     icon: Scissors,
     subSpecs: ['Double-Needle Flatlock', 'High-Density Bar-Tack', 'Artisanal Tailored Fit'],
-    imageUrl: '/assets/timeline-stitch.webp'
+    imageUrl: '/__l5e/assets-v1/8f3054c3-420c-4c21-ba16-c0f4093c5ae8/tl-3.jpg'
   },
   {
     number: '04',
@@ -43,7 +43,7 @@ const STORY_STEPS: StoryStep[] = [
     description: 'Packaged in custom biodegradable metallic ziplock pods and delivered with zero carbon offsets. GrabNWear brings sustainable street drops directly to your doorstep.',
     icon: ShieldCheck,
     subSpecs: ['100% Biodegradable Poly', 'Custom Matte Metallic Pod', 'Express Green Shipping'],
-    imageUrl: '/assets/timeline-pod.webp'
+    imageUrl: '/__l5e/assets-v1/a7a4fcd6-bb4a-40be-8217-578104e167ca/tl-4.jpg'
   }
 ];
 
@@ -123,38 +123,26 @@ const CardWithObserver = ({
 export default function StoryTimeline() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Highly optimized scroll tracker that writes to a CSS variable via requestAnimationFrame
-  // This bypasses React re-renders on scroll entirely, running animations at 120 FPS
+  // Progress = how far the section has scrolled past the viewport, 0→1.
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      // Calculate relative scroll bounds inside the timeline section
-      const start = rect.top - viewportHeight;
-      const end = rect.bottom - 100;
-      const total = end - start;
-      const current = window.scrollY - (window.scrollY + start);
-
-      const pct = Math.max(0, Math.min(1, current / total));
+      const vh = window.innerHeight;
+      const pct = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
       sectionRef.current.style.setProperty('--scroll-pct', pct.toString());
     };
 
-    let ticking = false;
     const onScroll = () => {
       if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
         ticking = true;
+        requestAnimationFrame(() => { handleScroll(); ticking = false; });
       }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     handleScroll();
-
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
