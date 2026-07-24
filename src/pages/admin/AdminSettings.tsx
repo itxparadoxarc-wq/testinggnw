@@ -74,9 +74,9 @@ const AdminSettings = () => {
 
   // Hero Slides
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([
-    { title: 'Grab Your Style', subtitle: 'Trendy streetwear & fashion curated for the bold.', cta_text: 'Shop Now', cta_link: '/collections', bg: '/assets/hero-1.jpg' },
-    { title: 'New Season Drops', subtitle: 'Fresh arrivals handpicked for your wardrobe.', cta_text: 'View Collection', cta_link: '/collections/new-arrivals', bg: '/assets/hero-2.jpg' },
-    { title: 'Up to 40% Off', subtitle: "Premium quality at unbeatable prices.", cta_text: 'Shop Sale', cta_link: '/collections/on-sale', bg: '/assets/hero-3.jpg' },
+    { title: 'Grab Your Style', subtitle: 'Trendy streetwear & fashion curated for the bold.', cta_text: 'Shop Now', cta_link: '/collections', bg: '/__l5e/assets-v1/4a7dcfe5-f3bd-4325-b675-8e74cd80f135/hero-1.jpg' },
+    { title: 'New Season Drops', subtitle: 'Fresh arrivals handpicked for your wardrobe.', cta_text: 'View Collection', cta_link: '/collections/new-arrivals', bg: '/__l5e/assets-v1/e9261d98-8a7e-43b5-8c09-5696128d9305/hero-2.jpg' },
+    { title: 'Up to 40% Off', subtitle: "Premium quality at unbeatable prices.", cta_text: 'Shop Sale', cta_link: '/collections/on-sale', bg: '/__l5e/assets-v1/c0e88ff3-efb8-44d7-9ce6-8cbfc2b64168/hero-3.jpg' },
   ]);
 
   // Trust Badges
@@ -212,7 +212,7 @@ const AdminSettings = () => {
   };
 
   const addSlide = () => {
-    setHeroSlides(prev => [...prev, { title: 'New Slide', subtitle: 'Description here', cta_text: 'Shop Now', cta_link: '/collections', bg: '/assets/hero-1.jpg' }]);
+    setHeroSlides(prev => [...prev, { title: 'New Slide', subtitle: 'Description here', cta_text: 'Shop Now', cta_link: '/collections', bg: '/__l5e/assets-v1/4a7dcfe5-f3bd-4325-b675-8e74cd80f135/hero-1.jpg' }]);
   };
 
   const removeSlide = (index: number) => {
@@ -349,7 +349,7 @@ const AdminSettings = () => {
                     <div className="col-span-2">
                       <Label className="text-xs">Slide Image</Label>
                       <div className="flex gap-2 mt-1">
-                        <Input value={slide.bg} onChange={e => updateSlide(i, 'bg', e.target.value)} placeholder="/assets/hero-1.jpg or https://..." className="text-xs flex-1" />
+                        <Input value={slide.bg} onChange={e => updateSlide(i, 'bg', e.target.value)} placeholder="/__l5e/assets-v1/4a7dcfe5-f3bd-4325-b675-8e74cd80f135/hero-1.jpg or https://..." className="text-xs flex-1" />
                         <HeroImageUpload slideIndex={i} onUploaded={(url) => updateSlide(i, 'bg', url)} />
                       </div>
                     </div>
@@ -460,7 +460,7 @@ const AdminSettings = () => {
               <div className={`p-4 rounded-xl border transition-colors ${codEnabled ? 'border-primary/30 bg-primary/5' : 'border-border bg-secondary/50'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <img src="/assets/payment-cod.png" alt="COD" className="h-8 w-auto object-contain" />
+                    <img src="/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png" alt="COD" className="h-8 w-auto object-contain" />
                     <div>
                       <p className="text-sm font-medium">Cash on Delivery (COD)</p>
                       <p className="text-xs text-muted-foreground">Customers pay when order is delivered</p>
@@ -488,7 +488,7 @@ const AdminSettings = () => {
               <div className={`p-4 rounded-xl border transition-colors ${jazzcashEnabled ? 'border-primary/30 bg-primary/5' : 'border-border bg-secondary/50'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <img src="/assets/payment-jazzcash.png" alt="JazzCash" className="h-8 w-auto object-contain" />
+                    <img src="/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png" alt="JazzCash" className="h-8 w-auto object-contain" />
                     <div>
                       <p className="text-sm font-medium">JazzCash</p>
                       <p className="text-xs text-muted-foreground">Mobile wallet payments</p>
@@ -515,7 +515,7 @@ const AdminSettings = () => {
               <div className={`p-4 rounded-xl border transition-colors ${easypaisaEnabled ? 'border-primary/30 bg-primary/5' : 'border-border bg-secondary/50'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <img src="/assets/payment-easypaisa.png" alt="EasyPaisa" className="h-8 w-auto object-contain" />
+                    <img src="/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png" alt="EasyPaisa" className="h-8 w-auto object-contain" />
                     <div>
                       <p className="text-sm font-medium">EasyPaisa</p>
                       <p className="text-xs text-muted-foreground">Mobile wallet payments</p>

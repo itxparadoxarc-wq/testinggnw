@@ -98,7 +98,7 @@ const HomePage = () => {
               className="absolute inset-0 will-change-[opacity] transition-opacity duration-700 ease-in-out"
               style={{ opacity: idx === currentSlide ? 1 : 0, zIndex: idx === currentSlide ? 1 : 0 }}
             >
-              <img src={slide.bg} alt="" className="absolute inset-0 w-full h-full object-cover object-top" loading={idx === 0 ? 'eager' : 'lazy'} decoding="async" />
+              <img src={slide.bg} alt="" className="absolute inset-0 w-full h-full object-cover object-center" loading={idx === 0 ? 'eager' : 'lazy'} decoding="async" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-black/20" />
               <div className="relative container-page h-full flex items-center">
                 <div
@@ -482,10 +482,10 @@ const PaymentMethodsBar = () => {
   const pm = settings.payment_methods;
 
   const methods = [
-    { key: 'cod', enabled: pm.cod, label: 'Cash on Delivery', logo: '/assets/payment-cod.png' },
+    { key: 'cod', enabled: pm.cod, label: 'Cash on Delivery', logo: '/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png' },
     { key: 'stripe', enabled: pm.stripe, label: 'Visa / Mastercard', icon: '💳' },
-    { key: 'jazzcash', enabled: pm.jazzcash, label: 'JazzCash', logo: '/assets/payment-jazzcash.png' },
-    { key: 'easypaisa', enabled: pm.easypaisa, label: 'EasyPaisa', logo: '/assets/payment-easypaisa.png' },
+    { key: 'jazzcash', enabled: pm.jazzcash, label: 'JazzCash', logo: '/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png' },
+    { key: 'easypaisa', enabled: pm.easypaisa, label: 'EasyPaisa', logo: '/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png' },
   ].filter((m) => m.enabled);
 
   if (methods.length === 0) return null;
