@@ -287,20 +287,14 @@ const HomePage = () => {
               <div className="absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
             </div>
             <div className="relative p-8 sm:p-10 lg:p-16 flex flex-col lg:flex-row items-center gap-6 sm:gap-8">
-              <motion.div 
-                className="flex-1 space-y-3 sm:space-y-4 text-center lg:text-left"
-                initial={{ opacity: 0, x: -30, rotateY: 5 }}
-                whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+              <div className="flex-1 space-y-3 sm:space-y-4 text-center lg:text-left">
                 <span className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">Limited Time Offer</span>
                 <h2 className="font-display text-2xl sm:text-3xl lg:text-5xl leading-tight">Up to 40% Off Selected Items</h2>
                 <p className="text-primary-foreground/80 text-sm sm:text-base max-w-md mx-auto lg:mx-0">Don't miss our biggest sale of the season. Premium quality at unbeatable prices.</p>
                 <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full shadow-lg mt-2">
                   <Link to="/collections/on-sale">Shop the Sale <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </Button>
-              </motion.div>
+              </div>
               <FloatingElement duration={5} yRange={18} rotateRange={8}>
                 <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 flex items-center justify-center text-6xl sm:text-8xl shadow-2xl border border-white/10 backdrop-blur-sm"
                   style={{ transform: 'rotateY(-10deg) rotateX(5deg)', transformStyle: 'preserve-3d' }}>
