@@ -33,7 +33,7 @@ const CollectionsPage = () => {
 
   // Local slider state to avoid lag
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([urlMinPrice, urlMaxPrice]);
-  const priceCommitRef = useRef<NodeJS.Timeout>();
+  const priceCommitRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Sync local state when URL changes externally
   useEffect(() => {
