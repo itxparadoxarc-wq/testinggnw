@@ -40,9 +40,9 @@ const defaults: StoreSettings = {
   footer: { tagline: 'Grab your style. Wear your confidence. Trendy fashion & streetwear for Pakistan and beyond.' },
   social_links: { instagram: '', facebook: '', whatsapp: '' },
   hero_slides: [
-    { title: 'Grab Your Style', subtitle: 'Trendy streetwear & fashion curated for the bold. Premium quality, unmatched confidence.', cta_text: 'Shop Now', cta_link: '/collections', bg: '/assets/hero-1.jpg' },
-    { title: 'New Season Drops', subtitle: 'Fresh arrivals handpicked for your wardrobe. Elegance meets everyday comfort.', cta_text: 'View Collection', cta_link: '/collections/new-arrivals', bg: '/assets/hero-2.jpg' },
-    { title: 'Up to 40% Off', subtitle: "Premium quality at unbeatable prices. Don't miss our biggest sale of the season.", cta_text: 'Shop Sale', cta_link: '/collections/on-sale', bg: '/assets/hero-3.jpg' },
+    { title: 'Grab Your Style', subtitle: 'Trendy streetwear & fashion curated for the bold. Premium quality, unmatched confidence.', cta_text: 'Shop Now', cta_link: '/collections', bg: '/__l5e/assets-v1/ab0e041d-b131-4209-ab14-08c2b613a997/hero-1.jpg' },
+    { title: 'New Season Drops', subtitle: 'Fresh arrivals handpicked for your wardrobe. Elegance meets everyday comfort.', cta_text: 'View Collection', cta_link: '/collections/new-arrivals', bg: '/__l5e/assets-v1/5d2be3f6-4548-494e-90f1-15a2b0560894/hero-2.jpg' },
+    { title: 'Up to 40% Off', subtitle: "Premium quality at unbeatable prices. Don't miss our biggest sale of the season.", cta_text: 'Shop Sale', cta_link: '/collections/on-sale', bg: '/__l5e/assets-v1/9ac9d331-1471-4fd7-9a8e-31ee7c20507b/hero-3.jpg' },
   ],
   trust_badges: [
     { label: 'Free Delivery', desc: 'All over Pakistan' },

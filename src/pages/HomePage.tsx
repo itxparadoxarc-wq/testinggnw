@@ -100,34 +100,34 @@ const HomePage = () => {
             >
               <img src={slide.bg} alt="" className="absolute inset-0 w-full h-full object-cover object-top" loading={idx === 0 ? 'eager' : 'lazy'} decoding="async" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-black/20" />
-              <div className="relative container-page h-full flex items-center" style={{ perspective: '1000px' }}>
-                <motion.div
-                  initial={{ opacity: 0, y: 40, rotateX: 5 }}
-                  animate={idx === currentSlide ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: 5 }}
-                  transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="max-w-xl"
-                  style={{ transformStyle: 'preserve-3d' }}
+              <div className="relative container-page h-full flex items-center">
+                <div
+                  className="max-w-xl transition-all duration-700 ease-out"
+                  style={{
+                    opacity: idx === currentSlide ? 1 : 0,
+                    transform: idx === currentSlide ? 'translateY(0)' : 'translateY(24px)',
+                  }}
                 >
                   <span className="inline-flex items-center gap-1.5 text-white/90 text-sm font-medium mb-4 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/10">
                     <Sparkles className="h-3.5 w-3.5" /> {settings.store_name}
                   </span>
-                  <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white leading-[1.1] mb-5" style={{ transform: 'translateZ(30px)' }}>
+                  <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white leading-[1.1] mb-5">
                     {slide.title}
                   </h1>
-                  <p className="text-white/75 text-sm sm:text-base lg:text-lg mb-8 max-w-md leading-relaxed" style={{ transform: 'translateZ(15px)' }}>
+                  <p className="text-white/75 text-sm sm:text-base lg:text-lg mb-8 max-w-md leading-relaxed">
                     {slide.subtitle}
                   </p>
-                  <div className="flex flex-wrap gap-3" style={{ transform: 'translateZ(20px)' }}>
-                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base px-6 sm:px-8 rounded-full shadow-lg lift-3d">
+                  <div className="flex flex-wrap gap-3">
+                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base px-6 sm:px-8 rounded-full shadow-lg">
                       <Link to={slide.cta_link}>
                         {slide.cta_text} <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button asChild size="lg" className="bg-white/15 backdrop-blur-sm text-white hover:bg-white/25 border border-white/20 text-sm sm:text-base rounded-full lift-3d">
+                    <Button asChild size="lg" className="bg-white/15 backdrop-blur-sm text-white hover:bg-white/25 border border-white/20 text-sm sm:text-base rounded-full">
                       <Link to="/collections">Browse All</Link>
                     </Button>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Floating 3D decorative elements */}
                 <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2" style={{ perspective: '600px' }}>
@@ -287,20 +287,14 @@ const HomePage = () => {
               <div className="absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
             </div>
             <div className="relative p-8 sm:p-10 lg:p-16 flex flex-col lg:flex-row items-center gap-6 sm:gap-8">
-              <motion.div 
-                className="flex-1 space-y-3 sm:space-y-4 text-center lg:text-left"
-                initial={{ opacity: 0, x: -30, rotateY: 5 }}
-                whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+              <div className="flex-1 space-y-3 sm:space-y-4 text-center lg:text-left">
                 <span className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">Limited Time Offer</span>
                 <h2 className="font-display text-2xl sm:text-3xl lg:text-5xl leading-tight">Up to 40% Off Selected Items</h2>
                 <p className="text-primary-foreground/80 text-sm sm:text-base max-w-md mx-auto lg:mx-0">Don't miss our biggest sale of the season. Premium quality at unbeatable prices.</p>
                 <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full shadow-lg mt-2">
                   <Link to="/collections/on-sale">Shop the Sale <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </Button>
-              </motion.div>
+              </div>
               <FloatingElement duration={5} yRange={18} rotateRange={8}>
                 <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 flex items-center justify-center text-6xl sm:text-8xl shadow-2xl border border-white/10 backdrop-blur-sm"
                   style={{ transform: 'rotateY(-10deg) rotateX(5deg)', transformStyle: 'preserve-3d' }}>
