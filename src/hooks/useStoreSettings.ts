@@ -40,9 +40,9 @@ const defaults: StoreSettings = {
   footer: { tagline: 'Grab your style. Wear your confidence. Trendy fashion & streetwear for Pakistan and beyond.' },
   social_links: { instagram: '', facebook: '', whatsapp: '' },
   hero_slides: [
-    { title: 'Grab Your Style', subtitle: 'Trendy streetwear & fashion curated for the bold. Premium quality, unmatched confidence.', cta_text: 'Shop Now', cta_link: '/collections', bg: '/__l5e/assets-v1/ab0e041d-b131-4209-ab14-08c2b613a997/hero-1.jpg' },
-    { title: 'New Season Drops', subtitle: 'Fresh arrivals handpicked for your wardrobe. Elegance meets everyday comfort.', cta_text: 'View Collection', cta_link: '/collections/new-arrivals', bg: '/__l5e/assets-v1/5d2be3f6-4548-494e-90f1-15a2b0560894/hero-2.jpg' },
-    { title: 'Up to 40% Off', subtitle: "Premium quality at unbeatable prices. Don't miss our biggest sale of the season.", cta_text: 'Shop Sale', cta_link: '/collections/on-sale', bg: '/__l5e/assets-v1/9ac9d331-1471-4fd7-9a8e-31ee7c20507b/hero-3.jpg' },
+    { title: 'Streetwear, Elevated', subtitle: 'Heavyweight silhouettes engineered in Pakistan. Built for the cyber-age.', cta_text: 'Shop Now', cta_link: '/collections', bg: '/__l5e/assets-v1/f58923ee-938c-480f-93c4-af3e44a02af3/hero-1.jpg' },
+    { title: 'Essentials, Reimagined', subtitle: 'Cream-neutral basics in 450 GSM organic cotton. Crafted to outlast trends.', cta_text: 'Shop Essentials', cta_link: '/collections/essentials', bg: '/__l5e/assets-v1/2edef2df-f636-4d42-aeb9-1fa30cfe1e78/hero-2.jpg' },
+    { title: 'Technical Outerwear', subtitle: 'Neo-utility jackets forged for the streets. Precision cut, purpose-built.', cta_text: 'Explore Drop', cta_link: '/collections/jackets', bg: '/__l5e/assets-v1/82e3388d-e871-4ef6-beca-e59591e5e2d0/hero-3.jpg' },
   ],
   trust_badges: [
     { label: 'Free Delivery', desc: 'All over Pakistan' },
