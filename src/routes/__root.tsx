@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import {
+  ClientOnly,
   createRootRouteWithContext,
   HeadContent,
   Scripts,
@@ -10,6 +11,15 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import App from "../App";
+
+function AppClient() {
+  return (
+    <ClientOnly fallback={<div className="min-h-screen bg-background" />}>
+      <App />
+    </ClientOnly>
+  );
+}
+
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
