@@ -69,16 +69,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "notgrabnwear — Luxury Streetwear" },
+      { title: "GrabnWear — Luxury Streetwear" },
       { name: "description", content: "Elevated everyday essentials. Shop the latest drops in luxury streetwear." },
-      { property: "og:title", content: "notgrabnwear — Luxury Streetwear" },
+      { property: "og:title", content: "GrabnWear — Luxury Streetwear" },
       { property: "og:description", content: "Elevated everyday essentials. Shop the latest drops in luxury streetwear." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "GrabnWear — Luxury Streetwear" },
+      { name: "twitter:description", content: "Elevated everyday essentials. Shop the latest drops in luxury streetwear." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d279f179-0218-4e1f-a99f-957797441568" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d279f179-0218-4e1f-a99f-957797441568" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
