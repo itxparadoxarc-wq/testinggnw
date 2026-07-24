@@ -98,7 +98,7 @@ const HomePage = () => {
               className="absolute inset-0 will-change-[opacity] transition-opacity duration-700 ease-in-out"
               style={{ opacity: idx === currentSlide ? 1 : 0, zIndex: idx === currentSlide ? 1 : 0 }}
             >
-              <img src={slide.bg} alt="" className="absolute inset-0 w-full h-full object-cover object-top" loading={idx === 0 ? 'eager' : 'lazy'} decoding="async" />
+              <img src={slide.bg} alt="" className="absolute inset-0 w-full h-full object-cover object-center" loading={idx === 0 ? 'eager' : 'lazy'} decoding="async" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-black/20" />
               <div className="relative container-page h-full flex items-center">
                 <div
