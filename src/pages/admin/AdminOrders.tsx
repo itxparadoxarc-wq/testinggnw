@@ -103,7 +103,7 @@ const AdminOrders = () => {
 
   const updateOrderStatus = async (field: string, value: string) => {
     if (!detailOrder) return;
-    const { error } = await supabase.from('orders').update({ [field]: value }).eq('id', detailOrder.id);
+    const { error } = await supabase.from('orders').update({ [field]: value } as any).eq('id', detailOrder.id);
     if (error) { toast.error(error.message); return; }
     await supabase.from('order_timeline').insert({
       order_id: detailOrder.id,
