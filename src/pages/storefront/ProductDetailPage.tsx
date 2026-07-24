@@ -46,7 +46,7 @@ const ProductDetailPage = () => {
       const { data } = await supabase
         .from('products')
         .select('*, product_images(*), product_variants(*), product_options(*), categories(name, slug)')
-        .eq('slug', slug)
+        .eq('slug', slug || '')
         .eq('status', 'active')
         .maybeSingle();
 
