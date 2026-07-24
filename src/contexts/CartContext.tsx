@@ -18,7 +18,7 @@ export const CartSync: React.FC = () => {
     if (user && items.length >= 0) {
       supabase.from('carts').upsert({
         user_id: user.id,
-        items_json: items as CartItem[],
+        items_json: items as any,
         discount_code: discountCode || null,
       }, { onConflict: 'user_id' }).then(() => {});
     }
