@@ -60,9 +60,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 function NotFoundComponent() {
-  // Delegate to the React Router app so its own NotFound page renders.
-  return <App />;
+  return <AppClient />;
 }
+
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
