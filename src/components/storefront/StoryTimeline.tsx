@@ -258,12 +258,8 @@ export default function StoryTimeline() {
                   key={step.number}
                   className={`flex flex-col md:flex-row relative z-10 w-full items-center justify-between gap-6 md:gap-0 ${
                     isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                  style={{
-                    paddingTop: idx > 0 ? undefined : '0px'
-                  }}
+                  } ${idx > 0 ? 'md:pt-40' : ''}`}
                 >
-                  <style>{`@media (min-width: 768px) { [data-tl-step="${step.number}"] { padding-top: ${idx > 0 ? '160px' : '0px'}; } }`}</style>
                   {/* Flanking Card Container - text card has NO image to preload */}
                   <CardWithObserver isLeft={isEven}>
                     {/* Glassmorphic Story Card */}
