@@ -97,8 +97,8 @@ export function useStoreSettings() {
     // Realtime: when any store_settings row changes (admin save), refetch so
     // removed hero slides / payment icons disappear from live sessions immediately.
     const channel = supabase
-      .channel('store_settings_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'store_settings' }, async () => {
+      .channel(`store_settings_changes_${Math.random().toString(36).slice(2)}`)
+      .on('postgres_changes' as any, { event: '*', schema: 'public', table: 'store_settings' }, async () => {
         fetchPromise = null;
         const s = await fetchSettings();
         cachedSettings = s;
