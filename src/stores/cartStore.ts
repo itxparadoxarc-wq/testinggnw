@@ -124,7 +124,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       toast.error('Discount has expired');
       return false;
     }
-    if (data.usage_limit && data.used_count >= data.usage_limit) {
+    if (data.usage_limit && (data.used_count ?? 0) >= data.usage_limit) {
       toast.error('Discount usage limit reached');
       return false;
     }
