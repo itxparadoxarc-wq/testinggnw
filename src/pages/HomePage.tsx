@@ -23,37 +23,44 @@ const TRUST_ICONS: Record<string, any> = {
 };
 
 const HomePage = () => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [newArrivals, setNewArrivals] = useState<any[]>([]);
-  const [collections, setCollections] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const { settings } = useStoreSettings();
   const shouldReduce = useReducedMotion();
 
-  useEffect(() => {
-    const fetchData = async () => {
+  // Cached via react-query (5 min staleTime) so returning to the home page is
+  // instant instead of refetching everything on every mount.
+  const { data, isLoading: loading } = useQuery({
+    queryKey: ['home-data'],
+    queryFn: async () => {
+      const productFields = 'id, title, slug, tags, product_images(url, alt_text, position), product_variants(id, title, price, compare_at_price, inventory_quantity)';
       const [productsRes, collectionsRes, newRes, catRes] = await Promise.all([
-        supabase.from('products').select('*, product_images(*), product_variants(*)').eq('status', 'active').limit(8),
-        supabase.from('collections').select('*').limit(6),
-        supabase.from('products').select('*, product_images(*), product_variants(*)').eq('status', 'active').order('created_at', { ascending: false }).limit(4),
-        supabase.from('categories').select('*').order('sort_order').limit(6)
+        supabase.from('products').select(productFields).eq('status', 'active').limit(8),
+        supabase.from('collections').select('id, name, slug, description, image_url').limit(6),
+        supabase.from('products').select(productFields).eq('status', 'active').order('created_at', { ascending: false }).limit(4),
+        supabase.from('categories').select('id, name, slug, image_url').order('sort_order').limit(6),
       ]);
 
-      const mapProducts = (data: any[]) => data.map((p) => ({
-        ...p, images: p.product_images || [], variants: p.product_variants || []
+      const mapProducts = (rows: any[] | null) => (rows || []).map((p) => ({
+        ...p,
+        images: [...(p.product_images || [])].sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0)),
+        variants: p.product_variants || [],
       }));
 
-      if (productsRes.data) setProducts(mapProducts(productsRes.data));
-      if (newRes.data) setNewArrivals(mapProducts(newRes.data));
-      if (collectionsRes.data) setCollections(collectionsRes.data);
-      if (catRes.data) setCategories(catRes.data);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+      return {
+        products: mapProducts(productsRes.data),
+        newArrivals: mapProducts(newRes.data),
+        collections: collectionsRes.data || [],
+        categories: catRes.data || [],
+      };
+    },
+  });
+
+  const products = data?.products ?? [];
+  const newArrivals = data?.newArrivals ?? [];
+  const collections = data?.collections ?? [];
+  const categories = data?.categories ?? [];
+
 
   const slides = settings.hero_slides;
 
