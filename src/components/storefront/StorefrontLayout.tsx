@@ -36,7 +36,7 @@ const StorefrontLayout = () => {
   }, [settings.theme]);
 
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen flex flex-col overflow-x-clip bg-background text-foreground">
       <StorefrontHeader />
       <main className="flex-1 relative">
         <Outlet />
