@@ -194,8 +194,16 @@ h1, h2, h3 {
 a, button {
   transition: all 0.3s ease-out;
 }
-img {
-  transition: transform 0.5s;
+/* Global img transitions removed: they applied to every image on the page and
+   caused jank. Components opt in with their own transition utilities. */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 .animate-marquee {
   animation: marquee 20s linear infinite;

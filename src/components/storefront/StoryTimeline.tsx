@@ -238,14 +238,16 @@ export default function StoryTimeline() {
           {/* Mobile vertical straight line on left */}
           <div className="md:hidden absolute left-4 top-0 bottom-0 w-0.5 pointer-events-none z-0">
             <div className="w-full h-full bg-border/40 dark:bg-border/10" />
+            {/* scaleY instead of animating height: compositor-only, no layout */}
             <div
-              className="absolute w-full top-0 bg-primary shadow-[0_0_8px_#7c3aed]"
+              className="absolute inset-0 w-full bg-primary shadow-[0_0_8px_#7c3aed] origin-top"
               style={{
-                height: 'calc(var(--scroll-pct, 0) * 100%)',
-                willChange: 'height'
+                transform: 'scaleY(var(--scroll-pct, 0))',
+                willChange: 'transform',
               }}
             />
           </div>
+
 
           {/* STORY CARDS GRID */}
           <div className="space-y-10 md:space-y-0 md:relative w-full h-full">

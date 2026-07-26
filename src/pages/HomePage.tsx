@@ -10,6 +10,7 @@ import { formatPrice } from '@/lib/currency';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ScrollReveal';
 import { motion, useReducedMotion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import FloatingElement from '@/components/storefront/FloatingElement';
 import ParallaxSection from '@/components/storefront/ParallaxSection';
 import Tilt3DCard from '@/components/storefront/Tilt3DCard';
@@ -23,37 +24,44 @@ const TRUST_ICONS: Record<string, any> = {
 };
 
 const HomePage = () => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [newArrivals, setNewArrivals] = useState<any[]>([]);
-  const [collections, setCollections] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const { settings } = useStoreSettings();
   const shouldReduce = useReducedMotion();
 
-  useEffect(() => {
-    const fetchData = async () => {
+  // Cached via react-query (5 min staleTime) so returning to the home page is
+  // instant instead of refetching everything on every mount.
+  const { data, isLoading: loading } = useQuery({
+    queryKey: ['home-data'],
+    queryFn: async () => {
+      const productFields = 'id, title, slug, tags, product_images(url, alt_text, position), product_variants(id, title, price, compare_at_price, inventory_quantity)';
       const [productsRes, collectionsRes, newRes, catRes] = await Promise.all([
-        supabase.from('products').select('*, product_images(*), product_variants(*)').eq('status', 'active').limit(8),
-        supabase.from('collections').select('*').limit(6),
-        supabase.from('products').select('*, product_images(*), product_variants(*)').eq('status', 'active').order('created_at', { ascending: false }).limit(4),
-        supabase.from('categories').select('*').order('sort_order').limit(6)
+        supabase.from('products').select(productFields).eq('status', 'active').limit(8),
+        supabase.from('collections').select('id, name, slug, description, image_url').limit(6),
+        supabase.from('products').select(productFields).eq('status', 'active').order('created_at', { ascending: false }).limit(4),
+        supabase.from('categories').select('id, name, slug, image_url').order('sort_order').limit(6),
       ]);
 
-      const mapProducts = (data: any[]) => data.map((p) => ({
-        ...p, images: p.product_images || [], variants: p.product_variants || []
+      const mapProducts = (rows: any[] | null) => (rows || []).map((p) => ({
+        ...p,
+        images: [...(p.product_images || [])].sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0)),
+        variants: p.product_variants || [],
       }));
 
-      if (productsRes.data) setProducts(mapProducts(productsRes.data));
-      if (newRes.data) setNewArrivals(mapProducts(newRes.data));
-      if (collectionsRes.data) setCollections(collectionsRes.data);
-      if (catRes.data) setCategories(catRes.data);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+      return {
+        products: mapProducts(productsRes.data),
+        newArrivals: mapProducts(newRes.data),
+        collections: collectionsRes.data || [],
+        categories: catRes.data || [],
+      };
+    },
+  });
+
+  const products: any[] = data?.products ?? [];
+  const newArrivals: any[] = data?.newArrivals ?? [];
+  const collections: any[] = data?.collections ?? [];
+  const categories: any[] = data?.categories ?? [];
+
 
   const slides = settings.hero_slides;
 
@@ -283,8 +291,8 @@ const HomePage = () => {
         <section className="container-page py-12 sm:pb-16">
           <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground" style={{ perspective: '1000px' }}>
             <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+              <div className="hidden md:block absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="hidden md:block absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
             </div>
             <div className="relative p-8 sm:p-10 lg:p-16 flex flex-col lg:flex-row items-center gap-6 sm:gap-8">
               <div className="flex-1 space-y-3 sm:space-y-4 text-center lg:text-left">
@@ -296,8 +304,7 @@ const HomePage = () => {
                 </Button>
               </div>
               <FloatingElement duration={5} yRange={18} rotateRange={8}>
-                <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 flex items-center justify-center text-6xl sm:text-8xl shadow-2xl border border-white/10 backdrop-blur-sm"
-                  style={{ transform: 'rotateY(-10deg) rotateX(5deg)', transformStyle: 'preserve-3d' }}>
+                <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 flex items-center justify-center text-6xl sm:text-8xl shadow-2xl border border-white/10">
                   🛍️
                 </div>
               </FloatingElement>

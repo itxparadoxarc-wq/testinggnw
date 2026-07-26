@@ -60,20 +60,8 @@ export const ScrollReveal = ({
 export const StaggerContainer = forwardRef<
   HTMLDivElement,
   { children: ReactNode; className?: string; staggerDelay?: number }
->(({ children, className, staggerDelay = 0.08 }, ref) => {
-  const shouldReduce = useReducedMotion();
+>(({ children, className }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (shouldReduce) { setVisible(true); return; }
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.05, rootMargin: '-40px 0px' }
-    );
-    if (containerRef.current) observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [shouldReduce]);
 
   const setRefs = (node: HTMLDivElement | null) => {
     (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
@@ -81,14 +69,17 @@ export const StaggerContainer = forwardRef<
     else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
   };
 
-  if (shouldReduce) return <div ref={setRefs} className={className}>{children}</div>;
 
+  // Children always render: gating them on `visible` left an empty box in the
+  // layout until the observer fired, which caused visible content jumps / CLS.
+  // Each StaggerItem handles its own reveal transition.
   return (
     <div ref={setRefs} className={className}>
-      {visible ? children : null}
+      {children}
     </div>
   );
 });
+
 StaggerContainer.displayName = 'StaggerContainer';
 
 export const StaggerItem = forwardRef<
