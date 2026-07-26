@@ -283,8 +283,8 @@ const HomePage = () => {
         <section className="container-page py-12 sm:pb-16">
           <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground" style={{ perspective: '1000px' }}>
             <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+              <div className="hidden md:block absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="hidden md:block absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
             </div>
             <div className="relative p-8 sm:p-10 lg:p-16 flex flex-col lg:flex-row items-center gap-6 sm:gap-8">
               <div className="flex-1 space-y-3 sm:space-y-4 text-center lg:text-left">
@@ -296,8 +296,7 @@ const HomePage = () => {
                 </Button>
               </div>
               <FloatingElement duration={5} yRange={18} rotateRange={8}>
-                <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 flex items-center justify-center text-6xl sm:text-8xl shadow-2xl border border-white/10 backdrop-blur-sm"
-                  style={{ transform: 'rotateY(-10deg) rotateX(5deg)', transformStyle: 'preserve-3d' }}>
+                <div className="w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 flex items-center justify-center text-6xl sm:text-8xl shadow-2xl border border-white/10">
                   🛍️
                 </div>
               </FloatingElement>
