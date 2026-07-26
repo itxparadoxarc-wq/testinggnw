@@ -77,8 +77,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "GrabnWear — Luxury Streetwear" },
       { name: "twitter:description", content: "Elevated everyday essentials. Shop the latest drops in luxury streetwear." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d279f179-0218-4e1f-a99f-957797441568" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d279f179-0218-4e1f-a99f-957797441568" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/dd8e2bb0-282a-45d4-94cf-7efb93302512" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/dd8e2bb0-282a-45d4-94cf-7efb93302512" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
