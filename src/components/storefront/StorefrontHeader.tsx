@@ -49,10 +49,16 @@ const StorefrontHeader = () => {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    let last = window.scrollY > 10;
+    setScrolled(last);
+    const onScroll = () => {
+      const next = window.scrollY > 10;
+      if (next !== last) { last = next; setScrolled(next); }
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
