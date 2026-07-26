@@ -50,6 +50,7 @@ const AdminPages = lazy(() => import("@/pages/admin/AdminPages"));
 const AdminShipping = lazy(() => import("@/pages/admin/AdminShipping"));
 const AdminSettings = lazy(() => import("@/pages/admin/AdminSettings"));
 const AdminPayments = lazy(() => import("@/pages/admin/AdminPayments"));
+const AdminTeam = lazy(() => import("@/pages/admin/AdminTeam"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -111,6 +112,7 @@ const App = () => (
               <Route path="/admin/orders" element={<AdminOrders />} />
               <Route path="/admin/payments" element={<AdminPayments />} />
               <Route path="/admin/customers" element={<AdminCustomers />} />
+              <Route path="/admin/team" element={<AdminTeam />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
               <Route path="/admin/collections" element={<AdminCollections />} />
               <Route path="/admin/discounts" element={<AdminDiscounts />} />

@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
 import {
   LayoutDashboard, Package, ShoppingCart, Users, Tag, Star,
-  FileText, Settings, Truck, Layers, FolderTree, Newspaper, LogOut, Store, Menu, X, CreditCard
+  FileText, Settings, Truck, Layers, FolderTree, Newspaper, LogOut, Store, Menu, X, CreditCard, ShieldCheck
 } from 'lucide-react';
 import AdminAIChat from '@/components/admin/AdminAIChat';
 
@@ -22,6 +22,7 @@ const navItems = [
   { label: 'Blog', icon: Newspaper, path: '/admin/blog' },
   { label: 'Pages', icon: FileText, path: '/admin/pages' },
   { label: 'Shipping', icon: Truck, path: '/admin/shipping' },
+  { label: 'Admin Accounts', icon: ShieldCheck, path: '/admin/team' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
 
