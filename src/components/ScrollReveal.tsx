@@ -81,14 +81,16 @@ export const StaggerContainer = forwardRef<
     else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
   };
 
-  if (shouldReduce) return <div ref={setRefs} className={className}>{children}</div>;
-
+  // Children always render: gating them on `visible` left an empty box in the
+  // layout until the observer fired, which caused visible content jumps / CLS.
+  // Each StaggerItem handles its own reveal transition.
   return (
     <div ref={setRefs} className={className}>
-      {visible ? children : null}
+      {children}
     </div>
   );
 });
+
 StaggerContainer.displayName = 'StaggerContainer';
 
 export const StaggerItem = forwardRef<
