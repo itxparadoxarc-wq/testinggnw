@@ -10,6 +10,7 @@ import { formatPrice } from '@/lib/currency';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ScrollReveal';
 import { motion, useReducedMotion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import FloatingElement from '@/components/storefront/FloatingElement';
 import ParallaxSection from '@/components/storefront/ParallaxSection';
 import Tilt3DCard from '@/components/storefront/Tilt3DCard';
@@ -56,10 +57,10 @@ const HomePage = () => {
     },
   });
 
-  const products = data?.products ?? [];
-  const newArrivals = data?.newArrivals ?? [];
-  const collections = data?.collections ?? [];
-  const categories = data?.categories ?? [];
+  const products: any[] = data?.products ?? [];
+  const newArrivals: any[] = data?.newArrivals ?? [];
+  const collections: any[] = data?.collections ?? [];
+  const categories: any[] = data?.categories ?? [];
 
 
   const slides = settings.hero_slides;
