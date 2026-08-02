@@ -45,7 +45,7 @@ const ProductDetailPage = () => {
 
       const { data, error } = await supabase
         .from('products')
-        .select('id, title, slug, category_id, description, short_description, tags, status, created_at, product_images(id, url, alt_text, is_featured, position), product_variants(id, title, sku, price, compare_at_price, inventory_quantity, is_active), product_options(id, name, values, position), categories(name, slug)')
+        .select('*, product_images(*), product_variants(id, title, sku, price, compare_at_price, inventory_quantity, is_active, low_stock_threshold), product_options(*), categories(name, slug)')
         .eq('slug', slug || '')
         .eq('status', 'active')
         .maybeSingle();
@@ -63,7 +63,7 @@ const ProductDetailPage = () => {
         if (p.variants.length > 0) setSelectedVariant(p.variants[0]);
 
         // Fetch reviews
-        supabase.from('reviews').select('id, rating, title, body, created_at, user_id').eq('product_id', data.id).eq('status', 'approved').order('created_at', { ascending: false })
+        supabase.from('reviews').select('id, rating, title, body, created_at, user_id, admin_reply').eq('product_id', data.id).eq('status', 'approved').order('created_at', { ascending: false })
           .then(({ data: r }) => setReviews(r || []));
 
         // Fetch related products (same category)

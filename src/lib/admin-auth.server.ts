@@ -1,5 +1,8 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/integrations/supabase/types';
+
 export async function assertAdmin(context: {
-  supabase: { rpc: (name: string, params: Record<string, string>) => PromiseLike<{ data: unknown; error: unknown }> };
+  supabase: SupabaseClient<Database>;
   userId: string;
 }) {
   const { data, error } = await context.supabase.rpc('has_role', {

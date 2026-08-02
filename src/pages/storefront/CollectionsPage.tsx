@@ -51,7 +51,7 @@ const CollectionsPage = () => {
         setCollection(null);
       }
 
-      let query = supabase.from('products').select('id, title, slug, category_id, description, tags, status, created_at, product_images(id, url, alt_text, is_featured, position), product_variants(id, title, sku, price, compare_at_price, inventory_quantity, is_active), categories(name, slug)').eq('status', 'active');
+      let query = supabase.from('products').select('*, product_images(*), product_variants(id, title, sku, price, compare_at_price, inventory_quantity, is_active), categories(name, slug)').eq('status', 'active');
 
       if (slug) {
         const { data: colData } = await supabase.from('collections').select('id').eq('slug', slug).maybeSingle();
