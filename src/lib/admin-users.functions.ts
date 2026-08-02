@@ -7,7 +7,8 @@ export const listAdmins = createServerFn({ method: 'POST' })
   .handler(async ({ context }) => {
     const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { getAdminClient } = await import('@/lib/admin-client.server');
+    const supabaseAdmin = getAdminClient();
 
     const { data: roles, error } = await supabaseAdmin
       .from('user_roles')
@@ -52,7 +53,8 @@ export const createAdmin = createServerFn({ method: 'POST' })
   .handler(async ({ data, context }) => {
     const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { getAdminClient } = await import('@/lib/admin-client.server');
+    const supabaseAdmin = getAdminClient();
 
     const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
       email: data.email,
@@ -76,7 +78,8 @@ export const promoteToAdmin = createServerFn({ method: 'POST' })
   .handler(async ({ data, context }) => {
     const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { getAdminClient } = await import('@/lib/admin-client.server');
+    const supabaseAdmin = getAdminClient();
 
     const { data: profile } = await supabaseAdmin
       .from('profiles')
@@ -99,7 +102,8 @@ export const revokeAdmin = createServerFn({ method: 'POST' })
     const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     if (data.userId === context.userId) throw new Error('You cannot revoke your own admin access');
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { getAdminClient } = await import('@/lib/admin-client.server');
+    const supabaseAdmin = getAdminClient();
     const { error } = await supabaseAdmin
       .from('user_roles')
       .delete()
@@ -116,7 +120,8 @@ export const deleteAdminAccount = createServerFn({ method: 'POST' })
     const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     if (data.userId === context.userId) throw new Error('You cannot delete your own account');
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { getAdminClient } = await import('@/lib/admin-client.server');
+    const supabaseAdmin = getAdminClient();
     const { error } = await supabaseAdmin.auth.admin.deleteUser(data.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -130,7 +135,8 @@ export const resetAdminPassword = createServerFn({ method: 'POST' })
   .handler(async ({ data, context }) => {
     const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { getAdminClient } = await import('@/lib/admin-client.server');
+    const supabaseAdmin = getAdminClient();
     const { error } = await supabaseAdmin.auth.admin.updateUserById(data.userId, {
       password: data.password,
     });
