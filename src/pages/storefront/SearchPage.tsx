@@ -16,9 +16,10 @@ const SearchPage = () => {
   useEffect(() => {
     if (!query.trim()) { setProducts([]); return; }
     setLoading(true);
-    supabase.from('products').select('*, product_images(*), product_variants(*)')
+    supabase.from('products').select('id, title, slug, tags, created_at, product_images(id, url, alt_text, position), product_variants(id, title, price, compare_at_price, inventory_quantity, is_active)')
       .eq('status', 'active').ilike('title', `%${query}%`).limit(40)
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) console.error('Failed to search products', error);
         setProducts((data || []).map(p => ({ ...p, images: p.product_images || [], variants: p.product_variants || [] })));
         setLoading(false);
       });
