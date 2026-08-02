@@ -19,7 +19,7 @@ const STORY_STEPS: StoryStep[] = [
     description: 'Our creative journey begins in the raw streets of Lahore. Our designers sculpt streetwear silhouettes that combine rigid structure, heavy-drop fits, and premium cyber aesthetics.',
     icon: Compass,
     subSpecs: ['Heavy Drop Shoulder', 'Technical Panel Cuts', '3D Box Silhouettes'],
-    imageUrl: '/__l5e/assets-v1/f37b90b7-dfc9-4742-93af-a23bd7d489ee/timeline-blueprint.webp'
+    imageUrl: '/media/f37b90b7-timeline-blueprint.webp'
   },
   {
     number: '02',
@@ -27,7 +27,7 @@ const STORY_STEPS: StoryStep[] = [
     description: 'We source ultra-premium, heavy-weight organic cotton (up to 450 GSM) directly from sustainable fields across Pakistan, woven to deliver long-lasting softness and durable structural armor.',
     icon: Leaf,
     subSpecs: ['100% Organic Sourcing', '450 GSM Double-Fleece', 'Pakistan Cotton Pride'],
-    imageUrl: '/__l5e/assets-v1/4c222928-4d54-46e9-8005-ab31bd906feb/timeline-cotton.webp'
+    imageUrl: '/media/4c222928-timeline-cotton.webp'
   },
   {
     number: '03',
@@ -35,7 +35,7 @@ const STORY_STEPS: StoryStep[] = [
     description: 'Every seam and detail is reinforced with heavy double-needle stitching by local Pakistani artisans. This gives our garments unmatched structural integrity that holds its shape wash after wash.',
     icon: Scissors,
     subSpecs: ['Double-Needle Flatlock', 'High-Density Bar-Tack', 'Artisanal Tailored Fit'],
-    imageUrl: '/__l5e/assets-v1/44648c12-ae1e-489a-9f7b-03ae5eb8cbf3/timeline-stitch.webp'
+    imageUrl: '/media/44648c12-timeline-stitch.webp'
   },
   {
     number: '04',
@@ -43,7 +43,7 @@ const STORY_STEPS: StoryStep[] = [
     description: 'Packaged in custom biodegradable metallic ziplock pods and delivered with zero carbon offsets. GrabNWear brings sustainable street drops directly to your doorstep.',
     icon: ShieldCheck,
     subSpecs: ['100% Biodegradable Poly', 'Custom Matte Metallic Pod', 'Express Green Shipping'],
-    imageUrl: '/__l5e/assets-v1/c80a6d31-e47e-4fcf-adb0-fa21d3218056/timeline-pod.webp'
+    imageUrl: '/media/c80a6d31-timeline-pod.webp'
   }
 ];
 

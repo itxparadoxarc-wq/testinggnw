@@ -787,7 +787,7 @@ const CheckoutPage = () => {
                           <input type="radio" name="paymentMethod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-[hsl(var(--primary))]" />
                           <div>
                             <p className="font-medium text-sm flex items-center gap-2">
-                              <img src="/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png" alt="COD" className="h-6 w-auto object-contain" /> Cash on Delivery
+                              <img src="/media/0c8414fb-payment-cod.png" alt="COD" className="h-6 w-auto object-contain" /> Cash on Delivery
                             </p>
                             <p className="text-xs text-muted-foreground">Pay when you receive your order</p>
                           </div>
@@ -800,7 +800,7 @@ const CheckoutPage = () => {
                           <input type="radio" name="paymentMethod" checked={paymentMethod === 'jazzcash'} onChange={() => setPaymentMethod('jazzcash')} className="accent-[hsl(var(--primary))]" />
                           <div>
                             <p className="font-medium text-sm flex items-center gap-2">
-                              <img src="/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png" alt="JazzCash" className="h-6 w-auto object-contain" /> JazzCash
+                              <img src="/media/87908764-payment-jazzcash.png" alt="JazzCash" className="h-6 w-auto object-contain" /> JazzCash
                             </p>
                             <p className="text-xs text-muted-foreground">Send payment via JazzCash mobile wallet</p>
                           </div>
@@ -813,7 +813,7 @@ const CheckoutPage = () => {
                           <input type="radio" name="paymentMethod" checked={paymentMethod === 'easypaisa'} onChange={() => setPaymentMethod('easypaisa')} className="accent-[hsl(var(--primary))]" />
                           <div>
                             <p className="font-medium text-sm flex items-center gap-2">
-                              <img src="/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png" alt="EasyPaisa" className="h-6 w-auto object-contain" /> EasyPaisa
+                              <img src="/media/e7e406c5-payment-easypaisa.png" alt="EasyPaisa" className="h-6 w-auto object-contain" /> EasyPaisa
                             </p>
                             <p className="text-xs text-muted-foreground">Send payment via EasyPaisa mobile wallet</p>
                           </div>
@@ -868,7 +868,7 @@ const CheckoutPage = () => {
                   {paymentMethod === 'cod' ? (
                     <div className="space-y-4">
                       <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-sm">
-                        <p className="font-medium mb-1 flex items-center gap-2"><img src="/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png" alt="COD" className="h-5 w-auto object-contain" /> Cash on Delivery</p>
+                        <p className="font-medium mb-1 flex items-center gap-2"><img src="/media/0c8414fb-payment-cod.png" alt="COD" className="h-5 w-auto object-contain" /> Cash on Delivery</p>
                         <p className="text-muted-foreground">You will pay <strong>{formatPrice(orderTotal)}</strong> when your order is delivered. Please have the exact amount ready.</p>
                       </div>
                       <Button onClick={handleCODOrder} disabled={processing} className="w-full">
@@ -885,7 +885,7 @@ const CheckoutPage = () => {
                       {/* Account Details */}
                       <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-sm space-y-2">
                         <p className="font-semibold flex items-center gap-2">
-                          <img src={paymentMethod === 'jazzcash' ? '/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png' : '/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png'} alt="" className="h-5 w-auto object-contain" />
+                          <img src={paymentMethod === 'jazzcash' ? '/media/87908764-payment-jazzcash.png' : '/media/e7e406c5-payment-easypaisa.png'} alt="" className="h-5 w-auto object-contain" />
                           {paymentMethod === 'jazzcash' ? 'JazzCash' : 'EasyPaisa'} Payment Details
                         </p>
                         <p className="text-muted-foreground">Please send <strong>{formatPrice(orderTotal)}</strong> to:</p>
@@ -1011,9 +1011,9 @@ const CheckoutPage = () => {
             {/* Payment logos */}
             <div className="flex items-center justify-center gap-3 pt-2 flex-wrap">
               {pm.stripe && <span className="px-2 py-1 bg-secondary rounded text-[10px] font-semibold">💳 Visa/MC</span>}
-              {pm.cod && <img src="/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png" alt="COD" className="h-8 w-auto object-contain" />}
-              {pm.jazzcash && <img src="/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png" alt="JazzCash" className="h-8 w-auto object-contain" />}
-              {pm.easypaisa && <img src="/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png" alt="EasyPaisa" className="h-8 w-auto object-contain" />}
+              {pm.cod && <img src="/media/0c8414fb-payment-cod.png" alt="COD" className="h-8 w-auto object-contain" />}
+              {pm.jazzcash && <img src="/media/87908764-payment-jazzcash.png" alt="JazzCash" className="h-8 w-auto object-contain" />}
+              {pm.easypaisa && <img src="/media/e7e406c5-payment-easypaisa.png" alt="EasyPaisa" className="h-8 w-auto object-contain" />}
             </div>
           </div>
         </div>

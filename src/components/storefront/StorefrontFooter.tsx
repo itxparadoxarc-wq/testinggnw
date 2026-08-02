@@ -22,7 +22,7 @@ const StorefrontFooter = () => {
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <img
-                src="/__l5e/assets-v1/672ef6d3-4ff0-4905-aadf-53cdbfa2f036/logo.webp"
+                src="/media/672ef6d3-logo.webp"
                 alt={settings.store_name}
                 className="h-10"
               />
@@ -107,10 +107,10 @@ const StorefrontFooter = () => {
               <div className="mt-5 pt-4 border-t border-background/10">
                 <p className="text-xs opacity-50 mb-2">We Accept</p>
                 <div className="flex gap-3 flex-wrap items-center">
-                  {pm.cod && <img src="/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png" alt="COD" className="h-8 w-auto object-contain" />}
+                  {pm.cod && <img src="/media/0c8414fb-payment-cod.png" alt="COD" className="h-8 w-auto object-contain" />}
                   {pm.stripe && <span className="px-2 py-1 bg-background/10 rounded text-[10px] font-semibold">Visa/MC</span>}
-                  {pm.jazzcash && <img src="/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png" alt="JazzCash" className="h-8 w-auto object-contain" />}
-                  {pm.easypaisa && <img src="/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png" alt="EasyPaisa" className="h-8 w-auto object-contain" />}
+                  {pm.jazzcash && <img src="/media/87908764-payment-jazzcash.png" alt="JazzCash" className="h-8 w-auto object-contain" />}
+                  {pm.easypaisa && <img src="/media/e7e406c5-payment-easypaisa.png" alt="EasyPaisa" className="h-8 w-auto object-contain" />}
                 </div>
               </div>
             )}

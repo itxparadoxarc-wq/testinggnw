@@ -49,7 +49,7 @@ const AdminLayout = () => {
       <div className="p-4 border-b border-sidebar-border">
         <Link to="/admin" className="flex items-center gap-2" onClick={() => setSidebarOpen(false)}>
           <img
-            src="/__l5e/assets-v1/672ef6d3-4ff0-4905-aadf-53cdbfa2f036/logo.webp"
+            src="/media/672ef6d3-logo.webp"
             alt={settings.store_name}
             className="h-7"
           />
