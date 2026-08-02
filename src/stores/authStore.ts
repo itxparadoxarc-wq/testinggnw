@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
+let authInitialized = false;
+
 interface AuthState {
   user: User | null;
   session: Session | null;
@@ -62,6 +64,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   init: () => {
+    if (authInitialized) return;
+    authInitialized = true;
+
     const checkAdmin = async (userId: string) => {
       const { data } = await supabase
         .from('user_roles')
@@ -81,25 +86,26 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ profile: data });
     };
 
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      set({ session, user: session?.user ?? null });
+    supabase.auth.onAuthStateChange((_event, session) => {
+      set({ session, user: session?.user ?? null, loading: true });
       if (session?.user) {
         setTimeout(() => {
-          checkAdmin(session.user.id);
-          fetchProfile(session.user.id);
+          Promise.all([checkAdmin(session.user.id), fetchProfile(session.user.id)])
+            .finally(() => set({ loading: false }));
         }, 0);
+      } else {
+        set({ isAdmin: false, profile: null, loading: false });
+      }
+    });
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      set({ session, user: session?.user ?? null });
+      if (session?.user) {
+        await Promise.all([checkAdmin(session.user.id), fetchProfile(session.user.id)]);
       } else {
         set({ isAdmin: false, profile: null });
       }
       set({ loading: false });
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      set({ session, user: session?.user ?? null, loading: false });
-      if (session?.user) {
-        checkAdmin(session.user.id);
-        fetchProfile(session.user.id);
-      }
     });
   },
 }));
