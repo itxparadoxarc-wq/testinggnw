@@ -103,6 +103,11 @@ const AdminOrders = () => {
 
   const updateOrderStatus = async (field: string, value: string) => {
     if (!detailOrder) return;
+    const allowedFields = ['status', 'payment_status', 'fulfillment_status'] as const;
+    if (!allowedFields.includes(field as (typeof allowedFields)[number])) {
+      toast.error('This order field cannot be changed here');
+      return;
+    }
     const { error } = await supabase.from('orders').update({ [field]: value } as any).eq('id', detailOrder.id);
     if (error) { toast.error(error.message); return; }
     await supabase.from('order_timeline').insert({
@@ -110,12 +115,6 @@ const AdminOrders = () => {
       event: `${field.replace(/_/g, ' ')} updated`,
       description: `Changed to ${value}`,
     });
-    // Send status update email to customer and admin
-    if (field === 'status') {
-      supabase.functions.invoke('send-order-status-email', {
-        body: { order_id: detailOrder.id, new_status: value, tracking_number: detailOrder.tracking_number, carrier: detailOrder.carrier },
-      }).catch(console.error);
-    }
     setDetailOrder({ ...detailOrder, [field]: value });
     toast.success('Status updated');
     loadOrders();

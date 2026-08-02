@@ -662,12 +662,12 @@ const HeroImageUpload = ({ slideIndex, onUploaded }: { slideIndex: number; onUpl
 
     setUploading(true);
     const ext = file.name.split('.').pop();
-    const path = `hero-slide-${slideIndex}-${Date.now()}.${ext}`;
+    const path = `hero/hero-slide-${slideIndex}-${Date.now()}.${ext}`;
 
-    const { error } = await supabase.storage.from('hero-images').upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from('product-images').upload(path, file, { upsert: true });
     if (error) { toast.error('Upload failed: ' + error.message); setUploading(false); return; }
 
-    const { data: urlData } = supabase.storage.from('hero-images').getPublicUrl(path);
+    const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(path);
     onUploaded(urlData.publicUrl);
     toast.success('Image uploaded!');
     setUploading(false);
