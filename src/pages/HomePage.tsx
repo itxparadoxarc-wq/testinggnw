@@ -489,10 +489,10 @@ const PaymentMethodsBar = () => {
   const pm = settings.payment_methods;
 
   const methods = [
-    { key: 'cod', enabled: pm.cod, label: 'Cash on Delivery', logo: '/__l5e/assets-v1/0c8414fb-15e4-49d0-835a-3e185843e440/payment-cod.png' },
+    { key: 'cod', enabled: pm.cod, label: 'Cash on Delivery', logo: '/media/0c8414fb-payment-cod.png' },
     { key: 'stripe', enabled: pm.stripe, label: 'Visa / Mastercard', icon: '💳' },
-    { key: 'jazzcash', enabled: pm.jazzcash, label: 'JazzCash', logo: '/__l5e/assets-v1/87908764-5adb-4d14-988d-dec005844eb7/payment-jazzcash.png' },
-    { key: 'easypaisa', enabled: pm.easypaisa, label: 'EasyPaisa', logo: '/__l5e/assets-v1/e7e406c5-5c12-46aa-866f-773f7dec3fd1/payment-easypaisa.png' },
+    { key: 'jazzcash', enabled: pm.jazzcash, label: 'JazzCash', logo: '/media/87908764-payment-jazzcash.png' },
+    { key: 'easypaisa', enabled: pm.easypaisa, label: 'EasyPaisa', logo: '/media/e7e406c5-payment-easypaisa.png' },
   ].filter((m) => m.enabled);
 
   if (methods.length === 0) return null;
