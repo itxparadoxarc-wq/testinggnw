@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session && window.location.hash) setStep('reset');
     });
@@ -24,7 +24,7 @@ const ForgotPasswordPage = () => {
       if (event === 'PASSWORD_RECOVERY') setStep('reset');
     });
     return () => data.subscription.unsubscribe();
-  });
+  }, []);
 
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
