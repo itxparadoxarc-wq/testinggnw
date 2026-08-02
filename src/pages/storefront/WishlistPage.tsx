@@ -17,8 +17,9 @@ const WishlistPage = () => {
 
   useEffect(() => {
     if (wishlistIds.length === 0) { setProducts([]); setLoading(false); return; }
-    supabase.from('products').select('*, product_images(*), product_variants(*)')
-      .in('id', wishlistIds).then(({ data }) => {
+    supabase.from('products').select('id, title, slug, tags, product_images(id, url, alt_text, position), product_variants(id, title, price, compare_at_price, inventory_quantity, is_active)')
+      .in('id', wishlistIds).then(({ data, error }) => {
+        if (error) console.error('Failed to load wishlist', error);
         setProducts((data || []).map(p => ({ ...p, images: p.product_images || [], variants: p.product_variants || [] })));
         setLoading(false);
       });

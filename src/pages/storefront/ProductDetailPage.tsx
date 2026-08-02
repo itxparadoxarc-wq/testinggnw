@@ -43,13 +43,14 @@ const ProductDetailPage = () => {
       setSelectedImage(0);
       setQuantity(1);
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('products')
-        .select('*, product_images(*), product_variants(*), product_options(*), categories(name, slug)')
+        .select('*, product_images(*), product_variants(id, title, sku, price, compare_at_price, inventory_quantity, is_active, low_stock_threshold), product_options(*), categories(name, slug)')
         .eq('slug', slug || '')
         .eq('status', 'active')
         .maybeSingle();
 
+      if (error) console.error('Failed to load product', error);
       if (data) {
         const p = {
           ...data,
@@ -62,12 +63,12 @@ const ProductDetailPage = () => {
         if (p.variants.length > 0) setSelectedVariant(p.variants[0]);
 
         // Fetch reviews
-        supabase.from('reviews').select('*').eq('product_id', data.id).eq('status', 'approved').order('created_at', { ascending: false })
+        supabase.from('reviews').select('id, rating, title, body, created_at, user_id, admin_reply').eq('product_id', data.id).eq('status', 'approved').order('created_at', { ascending: false })
           .then(({ data: r }) => setReviews(r || []));
 
         // Fetch related products (same category)
         if (data.category_id) {
-          supabase.from('products').select('*, product_images(*), product_variants(*)')
+          supabase.from('products').select('id, title, slug, tags, product_images(id, url, alt_text, position), product_variants(id, title, price, compare_at_price, inventory_quantity, is_active)')
             .eq('status', 'active').eq('category_id', data.category_id).neq('id', data.id).limit(4)
             .then(({ data: rel }) => {
               setRelatedProducts((rel || []).map(p => ({ ...p, images: p.product_images || [], variants: p.product_variants || [] })));

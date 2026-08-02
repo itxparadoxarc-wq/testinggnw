@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const LoginPage = () => {
   const { signIn } = useAuth();
@@ -22,7 +23,16 @@ const LoginPage = () => {
       toast.error(error.message);
     } else {
       toast.success('Welcome back!');
-      navigate('/');
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: isAdmin } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'admin',
+        });
+        navigate(isAdmin ? '/admin' : '/');
+      } else {
+        navigate('/');
+      }
     }
   };
 

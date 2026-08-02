@@ -45,13 +45,13 @@ const CollectionsPage = () => {
       setLoading(true);
 
       if (slug) {
-        const { data: col } = await supabase.from('collections').select('*').eq('slug', slug).maybeSingle();
+        const { data: col } = await supabase.from('collections').select('id, name, slug, description, image_url').eq('slug', slug).maybeSingle();
         setCollection(col);
       } else {
         setCollection(null);
       }
 
-      let query = supabase.from('products').select('*, product_images(*), product_variants(*), categories(name, slug)').eq('status', 'active');
+      let query = supabase.from('products').select('*, product_images(*), product_variants(id, title, sku, price, compare_at_price, inventory_quantity, is_active), categories(name, slug)').eq('status', 'active');
 
       if (slug) {
         const { data: colData } = await supabase.from('collections').select('id').eq('slug', slug).maybeSingle();
@@ -88,7 +88,13 @@ const CollectionsPage = () => {
           query = query.order('created_at', { ascending: false });
       }
 
-      const { data } = await query;
+      const { data, error } = await query;
+      if (error) {
+        console.error('Failed to load products', error);
+        setProducts([]);
+        setLoading(false);
+        return;
+      }
       if (data) {
         setProducts(data.map(p => ({
           ...p,
@@ -100,7 +106,7 @@ const CollectionsPage = () => {
       setLoading(false);
     };
 
-    supabase.from('categories').select('*').is('parent_id', null).order('sort_order')
+    supabase.from('categories').select('id, name, slug, image_url, parent_id, sort_order').is('parent_id', null).order('sort_order')
       .then(({ data }) => { if (data) setCategories(data); });
 
     fetchAll();

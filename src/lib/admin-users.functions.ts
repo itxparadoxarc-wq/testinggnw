@@ -2,17 +2,10 @@ import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 
-async function assertAdmin(context: any) {
-  const { data, error } = await context.supabase.rpc('has_role', {
-    _user_id: context.userId,
-    _role: 'admin',
-  });
-  if (error || !data) throw new Error('Forbidden: admin access required');
-}
-
 export const listAdmins = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
 
@@ -57,6 +50,7 @@ export const createAdmin = createServerFn({ method: 'POST' })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
 
@@ -80,6 +74,7 @@ export const promoteToAdmin = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ email: z.string().trim().email().max(255) }).parse(d))
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
 
@@ -101,6 +96,7 @@ export const revokeAdmin = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ userId: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     if (data.userId === context.userId) throw new Error('You cannot revoke your own admin access');
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
@@ -117,6 +113,7 @@ export const deleteAdminAccount = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ userId: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     if (data.userId === context.userId) throw new Error('You cannot delete your own account');
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
@@ -131,6 +128,7 @@ export const resetAdminPassword = createServerFn({ method: 'POST' })
     z.object({ userId: z.string().uuid(), password: z.string().min(8).max(72) }).parse(d),
   )
   .handler(async ({ data, context }) => {
+    const { assertAdmin } = await import('@/lib/admin-auth.server');
     await assertAdmin(context);
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
     const { error } = await supabaseAdmin.auth.admin.updateUserById(data.userId, {
