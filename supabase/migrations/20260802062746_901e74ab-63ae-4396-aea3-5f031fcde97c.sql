@@ -1,0 +1,4 @@
+UPDATE product_images SET url = regexp_replace(url, '^/__l5e/assets-v1/([0-9a-f]{8})[0-9a-f-]*/', '/media/\1-') WHERE url LIKE '/__l5e/%';
+UPDATE categories SET image_url = regexp_replace(image_url, '^/__l5e/assets-v1/([0-9a-f]{8})[0-9a-f-]*/', '/media/\1-') WHERE image_url LIKE '/__l5e/%';
+UPDATE collections SET image_url = regexp_replace(image_url, '^/__l5e/assets-v1/([0-9a-f]{8})[0-9a-f-]*/', '/media/\1-') WHERE image_url LIKE '/__l5e/%';
+UPDATE store_settings SET value_json = (regexp_replace(value_json::text, '/__l5e/assets-v1/([0-9a-f]{8})[0-9a-f-]*/', '/media/\1-', 'g'))::jsonb WHERE value_json::text LIKE '%__l5e%';
