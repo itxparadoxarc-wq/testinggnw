@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Search, Eye, Truck, Clock, Package, MapPin } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
+import { sendOrderStatusEmail } from '@/lib/email-client';
 
 interface Order {
   id: string;

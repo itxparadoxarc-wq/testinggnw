@@ -15,6 +15,7 @@ import FloatingElement from '@/components/storefront/FloatingElement';
 import ParallaxSection from '@/components/storefront/ParallaxSection';
 import Tilt3DCard from '@/components/storefront/Tilt3DCard';
 import StoryTimeline from '@/components/storefront/StoryTimeline';
+import { sendNewsletterWelcomeEmail } from '@/lib/email-client';
 
 const TRUST_ICONS: Record<string, any> = {
   'Free Delivery': Truck,
@@ -428,6 +429,7 @@ const NewsletterSection = () => {
       if (error.code === '23505') toast.info("You're already subscribed!");
       else toast.error('Something went wrong');
     } else {
+      sendNewsletterWelcomeEmail(email.trim());
       toast.success('Welcome aboard! 🎉');
       setEmail('');
     }
