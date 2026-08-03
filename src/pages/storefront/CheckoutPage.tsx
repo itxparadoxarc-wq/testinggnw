@@ -562,10 +562,8 @@ const CheckoutPage = () => {
         phone: billingAddress.phone,
       };
 
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user?.id || null,
+      const order = await placeOrder(
+        {
           email: shippingAddress.email,
           subtotal,
           discount_amount: discountAmount,
@@ -574,34 +572,23 @@ const CheckoutPage = () => {
           total: orderTotal,
           shipping_address_json: addrJson,
           billing_address_json: billingJson,
-          status: 'confirmed' as any,
-          payment_status: 'paid' as any,
+          status: 'confirmed',
+          payment_status: 'paid',
           stripe_payment_intent_id: paymentIntentId,
           notes: discountCode ? `Discount: ${discountCode}` : null,
-        })
-        .select('id, order_number')
-        .single();
-
-      if (orderError) throw orderError;
-
-      const orderItems = items.map(item => ({
-        order_id: order.id,
-        product_id: item.productId,
-        variant_id: item.variantId,
-        title: item.title,
-        variant_title: item.variantTitle || null,
-        quantity: item.quantity,
-        unit_price: item.price,
-        total_price: item.price * item.quantity,
-        image_url: item.image || null,
-      }));
-
-      await supabase.from('order_items').insert(orderItems);
-      await supabase.from('order_timeline').insert({
-        order_id: order.id,
-        event: 'Order placed',
-        description: `Order ${order.order_number} placed with Stripe payment ${paymentIntentId}`,
-      });
+          timeline_note: `Order placed with Stripe payment ${paymentIntentId}`,
+        },
+        items.map(item => ({
+          product_id: item.productId,
+          variant_id: item.variantId,
+          title: item.title,
+          variant_title: item.variantTitle || null,
+          quantity: item.quantity,
+          unit_price: item.price,
+          total_price: item.price * item.quantity,
+          image_url: item.image || null,
+        })),
+      );
 
       if (saveAddress && user) {
         await supabase.from('addresses').insert({
