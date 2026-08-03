@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +8,6 @@ import { useWishlist } from '@/contexts/WishlistContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { formatPrice } from '@/lib/currency';
 import { playPop, playSuccess } from '@/lib/sounds';
-import { useInView } from '@/hooks/useInView';
 
 
 interface ProductCardProps {
@@ -38,8 +37,6 @@ const ProductCard = React.memo(React.forwardRef<HTMLDivElement, ProductCardProps
     ? Math.round((1 - variant.price / variant.compare_at_price) * 100) 
     : 0;
 
-  const { ref: cardRef, inView } = useInView<HTMLDivElement>();
-  const [imgLoaded, setImgLoaded] = useState(false);
 
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -58,26 +55,13 @@ const ProductCard = React.memo(React.forwardRef<HTMLDivElement, ProductCardProps
   };
 
   return (
-    <div
-      ref={(node) => {
-        (cardRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-        if (typeof ref === 'function') ref(node);
-        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      }}
-      className="group relative"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? 'none' : 'translate3d(0, 12px, 0)',
-        transition: 'opacity 320ms ease-out, transform 320ms ease-out',
-      }}
-    >
+    <div ref={ref} className="group relative">
       <Link to={`/products/${product.slug}`} className="block">
         <div className="aspect-[3/4] overflow-hidden rounded-xl bg-secondary relative shadow-md hover:shadow-xl transition-shadow duration-300">
           {mainImage && (
             <img src={mainImage.url} alt={mainImage.alt_text || product.title}
-              onLoad={() => setImgLoaded(true)}
-              className={`w-full h-full object-cover transition-[opacity,transform] duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'} ${secondImage ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
-              loading="lazy" decoding="async" fetchPriority="low" />
+              className={`w-full h-full object-cover transition-[opacity,transform] duration-300 ${secondImage ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
+              loading="lazy" decoding="async" />
           )}
           {secondImage && (
             <img src={secondImage.url} alt={secondImage.alt_text || product.title}
@@ -107,8 +91,8 @@ const ProductCard = React.memo(React.forwardRef<HTMLDivElement, ProductCardProps
           </button>
 
           {inStock && (
-            <div className="absolute bottom-3 left-3 right-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20">
-              <Button size="sm" className="w-full text-xs rounded-full shadow-lg bg-primary hover:bg-primary/90" onClick={handleAddToCart}>
+            <div className="absolute bottom-3 left-3 right-3 z-20 transition-all duration-300 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0">
+              <Button size="sm" className="w-full rounded-full shadow-lg" onClick={handleAddToCart}>
                 Add to Cart
               </Button>
             </div>
