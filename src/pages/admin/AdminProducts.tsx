@@ -463,7 +463,7 @@ const AdminProducts = () => {
 };
 
 // AI Product Assistant Bar
-const AI_CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-ai-chat`;
+const AI_CHAT_URL = '/api/public/ai-chat';
 
 const PRODUCT_AI_PROMPTS = [
   'Generate title, description & SEO for this product',

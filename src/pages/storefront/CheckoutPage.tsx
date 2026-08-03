@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
+import { sendOrderConfirmationEmail } from '@/lib/email-client';
 
 const stripePromise = loadStripe('pk_test_51T8hkcDw5g52An4nMi3WhMUq0T1CPKftWWbaN6UVwi7e4AGWlNd0WknDAtp1dg19gqQuQhaD5CFf7rrWdeaFPyPN00yHkXjnvq');
 
@@ -338,18 +339,19 @@ const CheckoutPage = () => {
           phone: shippingAddress.phone,
         };
 
-        const { data, error } = await supabase.functions.invoke('create-payment-intent', {
-          body: {
+        const resp = await fetch('/api/public/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             amount: orderTotal,
             currency: settings.currency === 'PKR' ? 'pkr' : 'usd',
             email: shippingAddress.email,
             order_data: { shipping_address: addrJson },
             items: items.map(i => ({ title: i.title, quantity: i.quantity, price: i.price })),
-          },
+          }),
         });
-
-        if (error) throw new Error(error.message);
-        if (data?.error) throw new Error(data.error);
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok || data?.error) throw new Error(data?.error || 'Failed to initialize payment');
 
         setClientSecret(data.clientSecret);
         setStep('payment');
@@ -459,7 +461,7 @@ const CheckoutPage = () => {
         });
       }
 
-      supabase.functions.invoke('send-order-confirmation', { body: { order_id: order.id } }).catch(console.error);
+      sendOrderConfirmationEmail(order.id);
       clearCart();
       setMobilePaymentSubmitted(true);
 
@@ -523,7 +525,7 @@ const CheckoutPage = () => {
         });
       }
 
-      supabase.functions.invoke('send-order-confirmation', { body: { order_id: order.id } }).catch(console.error);
+      sendOrderConfirmationEmail(order.id);
       clearCart();
       const whatsappUrl = buildWhatsAppUrl(order.order_number, 'Cash on Delivery');
       navigate(`/checkout/success?order=${order.order_number}&whatsapp=${encodeURIComponent(whatsappUrl)}`);
@@ -616,9 +618,7 @@ const CheckoutPage = () => {
         });
       }
 
-      supabase.functions.invoke('send-order-confirmation', {
-        body: { order_id: order.id },
-      }).catch(console.error);
+      sendOrderConfirmationEmail(order.id);
 
       clearCart();
       const whatsappUrl = buildWhatsAppUrl(order.order_number, 'Stripe (Paid)');
