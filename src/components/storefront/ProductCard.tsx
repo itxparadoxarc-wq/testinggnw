@@ -64,22 +64,25 @@ const ProductCard = React.memo(React.forwardRef<HTMLDivElement, ProductCardProps
         if (typeof ref === 'function') ref(node);
         else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }}
-      className="group relative opacity-0 translate-y-4 transition-all duration-500 ease-out"
+      className="group relative"
       style={{
         opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(16px)',
+        transform: inView ? 'none' : 'translate3d(0, 12px, 0)',
+        transition: 'opacity 320ms ease-out, transform 320ms ease-out',
       }}
     >
       <Link to={`/products/${product.slug}`} className="block">
         <div className="aspect-[3/4] overflow-hidden rounded-xl bg-secondary relative shadow-md hover:shadow-xl transition-shadow duration-300">
           {mainImage && (
             <img src={mainImage.url} alt={mainImage.alt_text || product.title}
-              className={`w-full h-full object-cover transition-all duration-500 ${secondImage ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
-              loading="lazy" decoding="async" />
+              onLoad={() => setImgLoaded(true)}
+              className={`w-full h-full object-cover transition-[opacity,transform] duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'} ${secondImage ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
+              loading="lazy" decoding="async" fetchPriority="low" />
           )}
           {secondImage && (
             <img src={secondImage.url} alt={secondImage.alt_text || product.title}
-              className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" loading="lazy" decoding="async" />
+              className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100" loading="lazy" decoding="async" />
+
           )}
           {!mainImage && (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
