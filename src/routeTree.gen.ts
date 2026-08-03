@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicAiChatRouteImport } from './routes/api/public/ai-chat'
+import { Route as ApiPublicEmailsOrderStatusRouteImport } from './routes/api/public/emails/order-status'
+import { Route as ApiPublicEmailsOrderConfirmationRouteImport } from './routes/api/public/emails/order-confirmation'
+import { Route as ApiPublicEmailsContactRouteImport } from './routes/api/public/emails/contact'
 
 const SplatRoute = SplatRouteImport.update({
   id: '/$',
@@ -28,35 +31,83 @@ const ApiPublicAiChatRoute = ApiPublicAiChatRouteImport.update({
   path: '/api/public/ai-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicEmailsOrderStatusRoute =
+  ApiPublicEmailsOrderStatusRouteImport.update({
+    id: '/api/public/emails/order-status',
+    path: '/api/public/emails/order-status',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicEmailsOrderConfirmationRoute =
+  ApiPublicEmailsOrderConfirmationRouteImport.update({
+    id: '/api/public/emails/order-confirmation',
+    path: '/api/public/emails/order-confirmation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicEmailsContactRoute = ApiPublicEmailsContactRouteImport.update({
+  id: '/api/public/emails/contact',
+  path: '/api/public/emails/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/api/public/ai-chat': typeof ApiPublicAiChatRoute
+  '/api/public/emails/contact': typeof ApiPublicEmailsContactRoute
+  '/api/public/emails/order-confirmation': typeof ApiPublicEmailsOrderConfirmationRoute
+  '/api/public/emails/order-status': typeof ApiPublicEmailsOrderStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/api/public/ai-chat': typeof ApiPublicAiChatRoute
+  '/api/public/emails/contact': typeof ApiPublicEmailsContactRoute
+  '/api/public/emails/order-confirmation': typeof ApiPublicEmailsOrderConfirmationRoute
+  '/api/public/emails/order-status': typeof ApiPublicEmailsOrderStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/api/public/ai-chat': typeof ApiPublicAiChatRoute
+  '/api/public/emails/contact': typeof ApiPublicEmailsContactRoute
+  '/api/public/emails/order-confirmation': typeof ApiPublicEmailsOrderConfirmationRoute
+  '/api/public/emails/order-status': typeof ApiPublicEmailsOrderStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$' | '/api/public/ai-chat'
+  fullPaths:
+    | '/'
+    | '/$'
+    | '/api/public/ai-chat'
+    | '/api/public/emails/contact'
+    | '/api/public/emails/order-confirmation'
+    | '/api/public/emails/order-status'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$' | '/api/public/ai-chat'
-  id: '__root__' | '/' | '/$' | '/api/public/ai-chat'
+  to:
+    | '/'
+    | '/$'
+    | '/api/public/ai-chat'
+    | '/api/public/emails/contact'
+    | '/api/public/emails/order-confirmation'
+    | '/api/public/emails/order-status'
+  id:
+    | '__root__'
+    | '/'
+    | '/$'
+    | '/api/public/ai-chat'
+    | '/api/public/emails/contact'
+    | '/api/public/emails/order-confirmation'
+    | '/api/public/emails/order-status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
   ApiPublicAiChatRoute: typeof ApiPublicAiChatRoute
+  ApiPublicEmailsContactRoute: typeof ApiPublicEmailsContactRoute
+  ApiPublicEmailsOrderConfirmationRoute: typeof ApiPublicEmailsOrderConfirmationRoute
+  ApiPublicEmailsOrderStatusRoute: typeof ApiPublicEmailsOrderStatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +133,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/emails/order-status': {
+      id: '/api/public/emails/order-status'
+      path: '/api/public/emails/order-status'
+      fullPath: '/api/public/emails/order-status'
+      preLoaderRoute: typeof ApiPublicEmailsOrderStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/emails/order-confirmation': {
+      id: '/api/public/emails/order-confirmation'
+      path: '/api/public/emails/order-confirmation'
+      fullPath: '/api/public/emails/order-confirmation'
+      preLoaderRoute: typeof ApiPublicEmailsOrderConfirmationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/emails/contact': {
+      id: '/api/public/emails/contact'
+      path: '/api/public/emails/contact'
+      fullPath: '/api/public/emails/contact'
+      preLoaderRoute: typeof ApiPublicEmailsContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,17 +161,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
   ApiPublicAiChatRoute: ApiPublicAiChatRoute,
+  ApiPublicEmailsContactRoute: ApiPublicEmailsContactRoute,
+  ApiPublicEmailsOrderConfirmationRoute: ApiPublicEmailsOrderConfirmationRoute,
+  ApiPublicEmailsOrderStatusRoute: ApiPublicEmailsOrderStatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

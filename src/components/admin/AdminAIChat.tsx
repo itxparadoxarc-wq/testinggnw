@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 type MsgContent = string | Array<{ type: 'text'; text: string } | { type: 'image_url'; image_url: { url: string } }>;
 type Msg = { role: 'user' | 'assistant'; content: MsgContent; images?: string[] };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-ai-chat`;
+const CHAT_URL = '/api/public/ai-chat';
 
 const QUICK_PROMPTS = [
   'Write a product description for a hoodie',
