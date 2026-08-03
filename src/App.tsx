@@ -103,6 +103,11 @@ const App = () => (
               <Route path="/account/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
               <Route path="/account/addresses" element={<ProtectedRoute><AddressesPage /></ProtectedRoute>} />
               <Route path="/account/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
+              {/* Friendly aliases so short/shared links never 404 */}
+              <Route path="/wishlist" element={<Navigate to="/account/wishlist" replace />} />
+              <Route path="/orders" element={<Navigate to="/account/orders" replace />} />
+              <Route path="/shop" element={<Navigate to="/collections" replace />} />
+              <Route path="/products" element={<Navigate to="/collections" replace />} />
             </Route>
 
             {/* Admin - Protected */}
