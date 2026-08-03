@@ -86,10 +86,9 @@ const CardWithObserver = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
-  const imageLoaded = useImagePreload(imageSrc || '');
-
-  // The card is only "ready" when it's scrolled into view AND its image is loaded
-  const ready = inView && imageLoaded;
+  // Reveal purely on scroll position; waiting for image decode caused
+  // empty cards to linger and then pop in.
+  const ready = inView;
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -97,7 +96,7 @@ const CardWithObserver = ({
         setInView(true);
         observer.unobserve(entry.target);
       }
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    }, { threshold: 0, rootMargin: '600px 0px' });
 
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -109,10 +108,8 @@ const CardWithObserver = ({
       className={`w-full md:w-[45%]`}
       style={{
         opacity: ready ? 1 : 0,
-        transform: ready
-          ? 'translateY(0) translateX(0) scale(1)'
-          : `translateY(28px) ${isLeft ? 'translateX(-12px)' : 'translateX(12px)'} scale(0.97)`,
-        transition: 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)'
+        transform: ready ? 'none' : 'translate3d(0, 20px, 0)',
+        transition: 'opacity 0.45s ease-out, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)'
       }}
     >
       {children}
@@ -155,8 +152,8 @@ export default function StoryTimeline() {
     >
       {/* Background Mesh Gradients - Layered CSS for rendering speed */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-15">
-        <div className="absolute top-[20%] left-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/10 rounded-full blur-[60px] md:blur-[100px] dark:bg-primary/5" />
-        <div className="absolute bottom-[30%] right-[-10%] w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-accent/10 rounded-full blur-[60px] md:blur-[100px] dark:bg-accent/5" />
+        <div className="absolute top-[20%] left-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/10 rounded-full blur-[50px] dark:bg-primary/5" />
+        <div className="absolute bottom-[30%] right-[-10%] w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-accent/10 rounded-full blur-[50px] dark:bg-accent/5" />
       </div>
 
       <div className="container-page relative z-10 px-4">
@@ -267,7 +264,7 @@ export default function StoryTimeline() {
                     {/* Glassmorphic Story Card */}
                     <div 
                       onMouseEnter={playPop}
-                      className="group relative p-6 md:p-8 rounded-2xl border border-white/10 dark:border-white/5 bg-background/50 hover:bg-background/80 backdrop-blur-xl shadow-xl transition-all duration-500 hover:shadow-primary/5 hover:border-primary/20 md:hover:-translate-y-1.5"
+                      className="group relative p-6 md:p-8 rounded-2xl border border-white/10 dark:border-white/5 bg-card/90 hover:bg-card shadow-lg transition-all duration-500 hover:shadow-primary/5 hover:border-primary/20 md:hover:-translate-y-1.5"
                     >
                       {/* Active floating step number */}
                       <span className={`absolute top-4 ${isEven ? 'left-4' : 'right-4'} md:static text-5xl md:text-6xl font-extrabold font-display leading-none text-muted-foreground/15 dark:text-muted-foreground/8 select-none tracking-tighter group-hover:text-primary/10 transition-colors`}>
