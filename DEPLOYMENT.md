@@ -1,39 +1,42 @@
 # Deploying this project
 
-The app is designed to be **zero-config**: clone/import the repo into any host
-(Cloudflare Pages/Workers, Vercel, Netlify, Render, …), run the build, and the
-storefront, auth, cart, checkout, and admin dashboard work immediately.
+The app is **zero-config**: import the repo into any host (Vercel, Cloudflare
+Pages/Workers, Netlify, Render, …), press deploy, and the storefront, auth,
+cart, checkout, emails, AI features, and admin dashboard work immediately.
+
+## One-click Vercel deploy
+
+1. Vercel → Add New → Project → import this repository.
+2. Leave every setting at its default and press **Deploy**.
+
+`vercel.json` pins the build to `npm run build`, and the build detects
+`VERCEL=1` and emits a Vercel Build Output API bundle (`.vercel/output`)
+with SSR, server functions, and all static media. No environment variables
+are required.
+
+## Other hosts
+
+- **Cloudflare Workers/Pages** – default target, `dist/` output.
+- **Netlify** – detected via `NETLIFY`, uses the Netlify preset.
+- Override anything with `NITRO_PRESET=<preset>`.
+
+Build command: `npm run build` · Node 20+.
 
 ## Why no setup is needed
 
-- All images/assets are committed under `public/media/`, so nothing depends on a
-  Lovable preview domain.
-- Public backend config lives in the committed `.env`
-  (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`
-  plus their non-`VITE_` server twins). These are publishable values that are
-  safe in a repo — row level security protects the data.
-- `vite.config.ts` reads that `.env` at build time and inlines
-  `process.env.SUPABASE_URL` / `process.env.SUPABASE_PUBLISHABLE_KEY` into the
-  server bundle, so SSR and server functions work even when the host injects no
-  environment variables at all.
+- All images/assets are committed under `public/media/`.
+- Public backend config lives in the committed `.env` and is inlined into
+  both the client and server bundles at build time. These are publishable
+  values — row level security protects the data.
 
-## Build settings
+## Optional environment variables
 
-- Build command: `npm run build`
-- Output: handled by the framework preset (Cloudflare Workers by default)
-- Node: 20+
+| Variable | Enables |
+| --- | --- |
+| `SUPABASE_SERVICE_ROLE_KEY` | Admin → Admin Accounts (create/delete admin users) |
+| `RESEND_API_KEY` | Transactional emails (orders, status updates, contact form) |
+| `GOOGLE_AI_API_KEY` | Admin AI assistant + AI product copy |
+| `STRIPE_SECRET_KEY` | Card payments (COD / JazzCash / EasyPaisa work without it) |
 
-## Optional: admin account management
-
-The only feature that needs a platform secret is **Admin → Admin Accounts**
-(creating/deleting admin users), because it calls the privileged Auth Admin API.
-A service-role key must never be committed to a public repo, so set it as a
-secret on your host if you want that page to work:
-
-```
-SUPABASE_SERVICE_ROLE_KEY = <your service role key>
-```
-
-Without it, everything else — including signing in as an existing admin and
-managing products, orders, collections, blog, and settings — works normally, and
-that one page shows a clear message instead of failing silently.
+Each of these degrades gracefully with a clear message when unset — nothing
+else breaks.
