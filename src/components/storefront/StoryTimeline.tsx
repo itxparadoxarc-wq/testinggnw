@@ -48,29 +48,6 @@ const STORY_STEPS: StoryStep[] = [
 ];
 
 /**
- * Preloads an image and returns a promise that resolves when the image is fully decoded.
- * Handles browser cache hits instantly.
- */
-const useImagePreload = (src: string) => {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    if (!src) { setLoaded(true); return; }
-    const img = new Image();
-    img.src = src;
-    if (img.complete) {
-      setLoaded(true);
-    } else {
-      img.onload = () => setLoaded(true);
-      img.onerror = () => setLoaded(true); // Fail gracefully, don't block forever
-    }
-    return () => { img.onload = null; img.onerror = null; };
-  }, [src]);
-
-  return loaded;
-};
-
-/**
  * Optimized card wrapper that synchronizes IntersectionObserver visibility
  * with image preload state. The card only reveals once BOTH conditions are met,
  * eliminating empty-box pop-in artifacts completely.
