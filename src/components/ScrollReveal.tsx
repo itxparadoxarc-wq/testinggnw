@@ -1,5 +1,6 @@
 import { ReactNode, forwardRef, useRef, useState, useEffect } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import { useInView } from '@/hooks/useInView';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -9,12 +10,12 @@ interface ScrollRevealProps {
   duration?: number;
 }
 
-const directionStyles = {
-  up: 'translate-y-8',
-  down: '-translate-y-8',
-  left: 'translate-x-10',
-  right: '-translate-x-10',
-  none: '',
+const offsets: Record<NonNullable<ScrollRevealProps['direction']>, string> = {
+  up: 'translate3d(0, 18px, 0)',
+  down: 'translate3d(0, -18px, 0)',
+  left: 'translate3d(18px, 0, 0)',
+  right: 'translate3d(-18px, 0, 0)',
+  none: 'none',
 };
 
 export const ScrollReveal = ({
@@ -22,21 +23,10 @@ export const ScrollReveal = ({
   className = '',
   delay = 0,
   direction = 'up',
-  duration = 500,
+  duration = 450,
 }: ScrollRevealProps) => {
   const shouldReduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (shouldReduce) { setVisible(true); return; }
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.1, rootMargin: '-40px 0px' }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [shouldReduce]);
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   if (shouldReduce) return <div className={className}>{children}</div>;
 
@@ -45,17 +35,17 @@ export const ScrollReveal = ({
       ref={ref}
       className={className}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'none' : undefined,
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'none' : offsets[direction],
+        willChange: inView ? undefined : 'opacity, transform',
         transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
       }}
     >
-      {visible ? children : (
-        <div className={`${directionStyles[direction]}`}>{children}</div>
-      )}
+      {children}
     </div>
   );
 };
+
 
 export const StaggerContainer = forwardRef<
   HTMLDivElement,
@@ -86,17 +76,7 @@ export const StaggerItem = forwardRef<
   HTMLDivElement,
   { children: ReactNode; className?: string }
 >(({ children, className }, ref) => {
-  const [visible, setVisible] = useState(false);
-  const itemRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.1 }
-    );
-    if (itemRef.current) observer.observe(itemRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const { ref: itemRef, inView } = useInView<HTMLDivElement>();
 
   const setRefs = (node: HTMLDivElement | null) => {
     (itemRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
@@ -109,9 +89,9 @@ export const StaggerItem = forwardRef<
       ref={setRefs}
       className={className}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'none' : 'translateY(16px)',
-        transition: 'opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1)',
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'none' : 'translate3d(0, 14px, 0)',
+        transition: 'opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       {children}
@@ -119,3 +99,4 @@ export const StaggerItem = forwardRef<
   );
 });
 StaggerItem.displayName = 'StaggerItem';
+
