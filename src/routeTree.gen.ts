@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicCreatePaymentIntentRouteImport } from './routes/api/public/create-payment-intent'
 import { Route as ApiPublicAiChatRouteImport } from './routes/api/public/ai-chat'
 import { Route as ApiPublicEmailsOrderStatusRouteImport } from './routes/api/public/emails/order-status'
 import { Route as ApiPublicEmailsOrderConfirmationRouteImport } from './routes/api/public/emails/order-confirmation'
@@ -26,6 +27,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCreatePaymentIntentRoute =
+  ApiPublicCreatePaymentIntentRouteImport.update({
+    id: '/api/public/create-payment-intent',
+    path: '/api/public/create-payment-intent',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicAiChatRoute = ApiPublicAiChatRouteImport.update({
   id: '/api/public/ai-chat',
   path: '/api/public/ai-chat',
@@ -53,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/api/public/ai-chat': typeof ApiPublicAiChatRoute
+  '/api/public/create-payment-intent': typeof ApiPublicCreatePaymentIntentRoute
   '/api/public/emails/contact': typeof ApiPublicEmailsContactRoute
   '/api/public/emails/order-confirmation': typeof ApiPublicEmailsOrderConfirmationRoute
   '/api/public/emails/order-status': typeof ApiPublicEmailsOrderStatusRoute
@@ -61,6 +69,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/api/public/ai-chat': typeof ApiPublicAiChatRoute
+  '/api/public/create-payment-intent': typeof ApiPublicCreatePaymentIntentRoute
   '/api/public/emails/contact': typeof ApiPublicEmailsContactRoute
   '/api/public/emails/order-confirmation': typeof ApiPublicEmailsOrderConfirmationRoute
   '/api/public/emails/order-status': typeof ApiPublicEmailsOrderStatusRoute
@@ -70,6 +79,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/api/public/ai-chat': typeof ApiPublicAiChatRoute
+  '/api/public/create-payment-intent': typeof ApiPublicCreatePaymentIntentRoute
   '/api/public/emails/contact': typeof ApiPublicEmailsContactRoute
   '/api/public/emails/order-confirmation': typeof ApiPublicEmailsOrderConfirmationRoute
   '/api/public/emails/order-status': typeof ApiPublicEmailsOrderStatusRoute
@@ -80,6 +90,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/api/public/ai-chat'
+    | '/api/public/create-payment-intent'
     | '/api/public/emails/contact'
     | '/api/public/emails/order-confirmation'
     | '/api/public/emails/order-status'
@@ -88,6 +99,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/api/public/ai-chat'
+    | '/api/public/create-payment-intent'
     | '/api/public/emails/contact'
     | '/api/public/emails/order-confirmation'
     | '/api/public/emails/order-status'
@@ -96,6 +108,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/api/public/ai-chat'
+    | '/api/public/create-payment-intent'
     | '/api/public/emails/contact'
     | '/api/public/emails/order-confirmation'
     | '/api/public/emails/order-status'
@@ -105,6 +118,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
   ApiPublicAiChatRoute: typeof ApiPublicAiChatRoute
+  ApiPublicCreatePaymentIntentRoute: typeof ApiPublicCreatePaymentIntentRoute
   ApiPublicEmailsContactRoute: typeof ApiPublicEmailsContactRoute
   ApiPublicEmailsOrderConfirmationRoute: typeof ApiPublicEmailsOrderConfirmationRoute
   ApiPublicEmailsOrderStatusRoute: typeof ApiPublicEmailsOrderStatusRoute
@@ -124,6 +138,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/create-payment-intent': {
+      id: '/api/public/create-payment-intent'
+      path: '/api/public/create-payment-intent'
+      fullPath: '/api/public/create-payment-intent'
+      preLoaderRoute: typeof ApiPublicCreatePaymentIntentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/ai-chat': {
@@ -161,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
   ApiPublicAiChatRoute: ApiPublicAiChatRoute,
+  ApiPublicCreatePaymentIntentRoute: ApiPublicCreatePaymentIntentRoute,
   ApiPublicEmailsContactRoute: ApiPublicEmailsContactRoute,
   ApiPublicEmailsOrderConfirmationRoute: ApiPublicEmailsOrderConfirmationRoute,
   ApiPublicEmailsOrderStatusRoute: ApiPublicEmailsOrderStatusRoute,
@@ -168,3 +190,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
