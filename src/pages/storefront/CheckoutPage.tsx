@@ -16,6 +16,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { sendOrderConfirmationEmail } from '@/lib/email-client';
+import { placeOrder } from '@/lib/place-order';
 
 const stripePromise = loadStripe('pk_test_51T8hkcDw5g52An4nMi3WhMUq0T1CPKftWWbaN6UVwi7e4AGWlNd0WknDAtp1dg19gqQuQhaD5CFf7rrWdeaFPyPN00yHkXjnvq');
 
