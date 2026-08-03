@@ -32,12 +32,12 @@ export interface PlaceOrderPayload {
  * signed-in customers both succeed (no RLS round-trips, no partial orders).
  */
 export async function placeOrder(order: PlaceOrderPayload, items: PlaceOrderItem[]) {
-  const rpc = supabase.rpc as unknown as (
-    fn: string,
-    args: Record<string, unknown>,
-  ) => Promise<{ data: unknown; error: { message: string } | null }>;
-
-  const { data, error } = await rpc('place_order', { _order: order, _items: items });
+  // NOTE: must stay bound to `supabase` — a detached rpc reference throws
+  // "Cannot read properties of undefined (reading 'rest')".
+  const { data, error } = await (supabase.rpc as any)('place_order', {
+    _order: order,
+    _items: items,
+  }) as { data: unknown; error: { message: string } | null };
 
   if (error) throw new Error(error.message || 'Failed to place order');
 
