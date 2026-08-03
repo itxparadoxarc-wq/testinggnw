@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { AuthInit } from "@/contexts/AuthContext";
 import { CartSync } from "@/contexts/CartContext";
@@ -103,6 +103,11 @@ const App = () => (
               <Route path="/account/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
               <Route path="/account/addresses" element={<ProtectedRoute><AddressesPage /></ProtectedRoute>} />
               <Route path="/account/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
+              {/* Friendly aliases so short/shared links never 404 */}
+              <Route path="/wishlist" element={<Navigate to="/account/wishlist" replace />} />
+              <Route path="/orders" element={<Navigate to="/account/orders" replace />} />
+              <Route path="/shop" element={<Navigate to="/collections" replace />} />
+              <Route path="/products" element={<Navigate to="/collections" replace />} />
             </Route>
 
             {/* Admin - Protected */}

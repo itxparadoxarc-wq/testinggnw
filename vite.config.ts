@@ -25,11 +25,26 @@ const SUPABASE_URL = envFromDotenv("VITE_SUPABASE_URL") || envFromDotenv("SUPABA
 const SUPABASE_PUBLISHABLE_KEY =
   envFromDotenv("VITE_SUPABASE_PUBLISHABLE_KEY") || envFromDotenv("SUPABASE_PUBLISHABLE_KEY");
 
+// Pick the deploy target automatically from the host's own environment so a plain
+// "import repo -> deploy" works with no manual configuration:
+//   Vercel  -> VERCEL=1            -> vercel preset (.vercel/output)
+//   Netlify -> NETLIFY=true        -> netlify preset
+//   otherwise (Cloudflare, local)  -> cloudflare module worker
+function detectPreset(): string {
+  if (process.env.NITRO_PRESET) return process.env.NITRO_PRESET;
+  if (process.env.VERCEL) return "vercel";
+  if (process.env.NETLIFY) return "netlify";
+  return "cloudflare-module";
+}
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+  },
+  nitro: {
+    preset: detectPreset(),
   },
   vite: {
     define: {
