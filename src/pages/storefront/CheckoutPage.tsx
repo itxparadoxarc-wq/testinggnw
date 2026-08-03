@@ -490,31 +490,32 @@ const CheckoutPage = () => {
         postal_code: billingAddress.postalCode, country: billingAddress.country, phone: billingAddress.phone,
       };
 
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user?.id || null, email: shippingAddress.email,
-          subtotal, discount_amount: discountAmount, shipping_amount: effectiveShippingCost,
-          tax_amount: 0, total: orderTotal,
-          shipping_address_json: addrJson, billing_address_json: billingJson,
-          status: 'pending' as any, payment_status: 'pending' as any,
+      const order = await placeOrder(
+        {
+          email: shippingAddress.email,
+          subtotal,
+          discount_amount: discountAmount,
+          shipping_amount: effectiveShippingCost,
+          tax_amount: 0,
+          total: orderTotal,
+          shipping_address_json: addrJson,
+          billing_address_json: billingJson,
+          status: 'pending',
+          payment_status: 'pending',
           notes: [discountCode ? `Discount: ${discountCode}` : '', 'Payment: Cash on Delivery'].filter(Boolean).join('. '),
-        })
-        .select('id, order_number')
-        .single();
-
-      if (orderError) throw orderError;
-
-      const orderItems = items.map(item => ({
-        order_id: order.id, product_id: item.productId, variant_id: item.variantId,
-        title: item.title, variant_title: item.variantTitle || null,
-        quantity: item.quantity, unit_price: item.price, total_price: item.price * item.quantity,
-        image_url: item.image || null,
-      }));
-      await supabase.from('order_items').insert(orderItems);
-      await supabase.from('order_timeline').insert({
-        order_id: order.id, event: 'Order placed', description: `Order ${order.order_number} placed — Cash on Delivery`,
-      });
+          timeline_note: 'Order placed — Cash on Delivery',
+        },
+        items.map(item => ({
+          product_id: item.productId,
+          variant_id: item.variantId,
+          title: item.title,
+          variant_title: item.variantTitle || null,
+          quantity: item.quantity,
+          unit_price: item.price,
+          total_price: item.price * item.quantity,
+          image_url: item.image || null,
+        })),
+      );
 
       if (saveAddress && user) {
         await supabase.from('addresses').insert({
