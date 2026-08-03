@@ -116,8 +116,12 @@ const AdminOrders = () => {
       description: `Changed to ${value}`,
     });
     setDetailOrder({ ...detailOrder, [field]: value });
+    if (field === 'status') {
+      sendOrderStatusEmail(detailOrder.id, value, trackingNumber);
+    }
     toast.success('Status updated');
     loadOrders();
+
     const { data } = await supabase.from('order_timeline').select('*').eq('order_id', detailOrder.id).order('created_at', { ascending: false });
     setTimeline((data as TimelineEvent[]) || []);
   };

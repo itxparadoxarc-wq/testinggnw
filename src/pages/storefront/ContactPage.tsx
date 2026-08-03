@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Mail, Phone, MapPin, Clock, Send, MessageSquare } from 'lucide-react';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
+import { sendContactEmail } from '@/lib/email-client';
 
 const ContactPage = () => {
   const { settings } = useStoreSettings();
@@ -30,6 +31,7 @@ const ContactPage = () => {
     if (error) {
       toast.error('Failed to send message. Please try again.');
     } else {
+      sendContactEmail({ name: name.trim(), email: email.trim(), subject: subject.trim(), message: message.trim() });
       toast.success("Message sent! We'll get back to you soon.");
       setName(''); setEmail(''); setSubject(''); setMessage('');
     }
