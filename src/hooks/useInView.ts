@@ -1,12 +1,39 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Reveal-on-scroll detector tuned so content is already visible by the time it
- * reaches the viewport. We pre-trigger far below the fold (rootMargin) and
- * treat anything already on screen at mount as immediately visible, which
- * removes the "images pop in while scrolling" effect.
+ * Reveal-on-scroll detector backed by a single shared IntersectionObserver.
+ *
+ * Using one observer for the whole page (instead of one per element) keeps
+ * scrolling cheap, and the generous rootMargin means elements have already
+ * finished their transition by the time they reach the viewport — no pop-in.
  */
-export function useInView<T extends HTMLElement = HTMLDivElement>(rootMargin = '400px 0px') {
+const ROOT_MARGIN = '800px 0px';
+
+type Cb = (visible: boolean) => void;
+
+let sharedObserver: IntersectionObserver | null = null;
+const callbacks = new WeakMap<Element, Cb>();
+
+function getObserver() {
+  if (typeof IntersectionObserver === 'undefined') return null;
+  if (!sharedObserver) {
+    sharedObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const cb = callbacks.get(entry.target);
+          if (cb) cb(true);
+          callbacks.delete(entry.target);
+          sharedObserver?.unobserve(entry.target);
+        }
+      },
+      { threshold: 0, rootMargin: ROOT_MARGIN },
+    );
+  }
+  return sharedObserver;
+}
+
+export function useInView<T extends HTMLElement = HTMLDivElement>(_rootMargin?: string) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
 
@@ -14,30 +41,26 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(rootMargin = '
     const node = ref.current;
     if (!node) return;
 
-    if (typeof IntersectionObserver === 'undefined') {
+    const observer = getObserver();
+    if (!observer) {
       setInView(true);
       return;
     }
 
     // Already on (or near) screen at mount — skip the animation entirely.
     const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 400 && rect.bottom > -400) {
+    if (rect.top < window.innerHeight + 600 && rect.bottom > -600) {
       setInView(true);
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0, rootMargin },
-    );
+    callbacks.set(node, () => setInView(true));
     observer.observe(node);
-    return () => observer.disconnect();
-  }, [rootMargin]);
+    return () => {
+      callbacks.delete(node);
+      observer.unobserve(node);
+    };
+  }, []);
 
   return { ref, inView };
 }
