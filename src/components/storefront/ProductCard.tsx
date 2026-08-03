@@ -8,6 +8,8 @@ import { useWishlist } from '@/contexts/WishlistContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { formatPrice } from '@/lib/currency';
 import { playPop, playSuccess } from '@/lib/sounds';
+import { useInView } from '@/hooks/useInView';
+
 
 interface ProductCardProps {
   product: {
@@ -36,20 +38,9 @@ const ProductCard = React.memo(React.forwardRef<HTMLDivElement, ProductCardProps
     ? Math.round((1 - variant.price / variant.compare_at_price) * 100) 
     : 0;
 
-  const [inView, setInView] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const { ref: cardRef, inView } = useInView<HTMLDivElement>();
+  const [imgLoaded, setImgLoaded] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setInView(true);
-        observer.unobserve(entry.target);
-      }
-    }, { threshold: 0.05, rootMargin: '100px 0px' });
-
-    if (cardRef.current) observer.observe(cardRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
