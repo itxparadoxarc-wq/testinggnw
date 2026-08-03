@@ -32,15 +32,19 @@ export interface PlaceOrderPayload {
  * signed-in customers both succeed (no RLS round-trips, no partial orders).
  */
 export async function placeOrder(order: PlaceOrderPayload, items: PlaceOrderItem[]) {
-  const { data, error } = await supabase.rpc('place_order' as never, {
-    _order: order as never,
-    _items: items as never,
-  });
+  const rpc = supabase.rpc as unknown as (
+    fn: string,
+    args: Record<string, unknown>,
+  ) => Promise<{ data: unknown; error: { message: string } | null }>;
+
+  const { data, error } = await rpc('place_order', { _order: order, _items: items });
 
   if (error) throw new Error(error.message || 'Failed to place order');
 
-  const row = Array.isArray(data) ? data[0] : data;
+  const row = (Array.isArray(data) ? data[0] : data) as
+    | { id: string; order_number: string }
+    | undefined;
   if (!row?.id) throw new Error('Order could not be created. Please try again.');
 
-  return row as { id: string; order_number: string };
+  return row;
 }
