@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { Plus, Pencil, Trash2, Search, Upload, X, Package, Sparkles, Loader2, Send } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
 import ReactMarkdown from 'react-markdown';
+import { getAccessToken } from '@/lib/session-token';
 
 interface Product {
   id: string;
