@@ -1,6 +1,7 @@
 // Google AI Studio (Gemini) chat endpoint.
 // Emits OpenAI-style SSE chunks so the existing admin chat UI works unchanged.
 import { createFileRoute } from '@tanstack/react-router';
+import { requireAdmin } from '@/lib/require-admin.server';
 
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
 const TEXT_MODEL = 'gemini-2.5-flash';
@@ -46,12 +47,16 @@ export const Route = createFileRoute('/api/public/ai-chat')({
         new Response(null, {
           status: 204,
           headers: {
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': 'null',
             'Access-Control-Allow-Headers': 'content-type, authorization',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
           },
         }),
       POST: async ({ request }) => {
+        // Admin-only: this endpoint spends the store's paid AI quota.
+        const auth = await requireAdmin(request);
+        if (!auth.ok) return auth.response!;
+
         const key = process.env.GOOGLE_AI_API_KEY;
         if (!key) {
           return Response.json({ error: 'AI is not configured (missing API key).' }, { status: 500 });
@@ -192,7 +197,6 @@ export const Route = createFileRoute('/api/public/ai-chat')({
             'Content-Type': 'text/event-stream; charset=utf-8',
             'Cache-Control': 'no-cache, no-transform',
             Connection: 'keep-alive',
-            'Access-Control-Allow-Origin': '*',
           },
         });
       },
