@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { Plus, Pencil, Trash2, Search, Upload, X, Package, Sparkles, Loader2, Send } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
 import ReactMarkdown from 'react-markdown';
+import { getAccessToken } from '@/lib/session-token';
 
 interface Product {
   id: string;
@@ -523,7 +524,7 @@ Only include fields you are suggesting changes for. Use PKR prices.`;
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${await getAccessToken()}`,
         },
         body: JSON.stringify({
           messages: [

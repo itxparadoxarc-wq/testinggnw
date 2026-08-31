@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 import { supabase } from '@/integrations/supabase/client';
+import { getAccessToken } from '@/lib/session-token';
 
 type MsgContent = string | Array<{ type: 'text'; text: string } | { type: 'image_url'; image_url: { url: string } }>;
 type Msg = { role: 'user' | 'assistant'; content: MsgContent; images?: string[] };
@@ -167,7 +168,7 @@ const AdminAIChat = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${await getAccessToken()}`,
         },
         body: JSON.stringify({
           messages: apiMessages,

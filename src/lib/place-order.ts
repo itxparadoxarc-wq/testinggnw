@@ -15,6 +15,8 @@ export interface PlaceOrderPayload {
   email: string;
   subtotal: number;
   discount_amount: number;
+  /** Validated server-side; client value is ignored for pricing. */
+  discount_code?: string | null;
   shipping_amount: number;
   tax_amount: number;
   total: number;
